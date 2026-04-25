@@ -167,14 +167,14 @@ app.post(
     let galleryPaths = [];
     if (req.files && req.files["gallery"]) {
       galleryPaths = req.files["gallery"].map(
-        (file) => `${API_URL}/uploads/${file.filename}`,
+        (file) => `${process.env.BASE_URL}/uploads/${file.filename}`,
       );
     }
 
     // Handle Cover Image
     let coverPath = "";
     if (req.files && req.files["image"]) {
-      coverPath = `${API_URL}/uploads/${req.files["image"][0].filename}`;
+      coverPath = `${process.env.BASE_URL}/uploads/${req.files["image"][0].filename}`;
     } else if (galleryPaths.length > 0) {
       coverPath = galleryPaths[0];
     }
@@ -278,14 +278,14 @@ app.put(
       let newGalleryPaths = [];
       if (req.files && req.files["gallery"]) {
         newGalleryPaths = req.files["gallery"].map(
-          (file) => `${API_URL}/uploads/${file.filename}`,
+          (file) => `${process.env.BASE_URL}/uploads/${file.filename}`,
         );
       }
 
       let finalImages = [...currentImages, ...newGalleryPaths];
 
       if (req.files && req.files["image"]) {
-        const newCoverPath = `${API_URL}/uploads/${req.files["image"][0].filename}`;
+        const newCoverPath = `${process.env.BASE_URL}/uploads/${req.files["image"][0].filename}`;
         finalImages = [
           newCoverPath,
           ...finalImages.filter((img) => img !== newCoverPath),
@@ -394,7 +394,7 @@ app.post("/api/music", checkAuth, upload.single("audio"), async (req, res) => {
     const newTrack = {
       title,
       genre,
-      audioUrl: req.file ? `${API_URL}/uploads/${req.file.filename}` : "",
+      audioUrl: req.file ? `${process.env.BASE_URL}/uploads/${req.file.filename}` : "",
     };
 
     const result = await db.collection("music").insertOne(newTrack);
@@ -425,7 +425,7 @@ app.put(
       };
 
       if (req.file) {
-        updatePayload.audioUrl = `${API_URL}/uploads/${req.file.filename}`;
+        updatePayload.audioUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
       }
 
       const updatedTrack = await db
@@ -477,7 +477,7 @@ app.post("/api/resume", checkAuth, upload.single("file"), async (req, res) => {
         .json({ success: false, message: "No file provided" });
     }
 
-    const fileUrl = `${API_URL}/uploads/${req.file.filename}`;
+    const fileUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
 
     // Keep only one resume doc
     await db.collection("resumes").deleteMany({});
