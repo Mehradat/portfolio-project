@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair", serif;
+  }
+  p, body {
+    font-family: "Inter", sans-serif;
+  }
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+}
