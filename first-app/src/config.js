@@ -125,4 +125,4 @@ export const TIMELINE_VIEWPORT = {
   once: true,
   margin: "-100px",
 };
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5005";
+export const API_URL = "https://portfolio-project-3otb.onrender.com";

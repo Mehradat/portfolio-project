@@ -37,7 +37,7 @@ function Header({ className = "text-white" }: { className?: string }) {
 
   useEffect(() => {
     // Check if user is authenticated
-    fetch(`${API_URL}/api/check-auth`, { credentials: "include" })
+    fetch(`${API_URL}/api/check-auth`)
       .then((res) => res.json())
       .then((data) => {
         if (data.isAuthenticated) {
