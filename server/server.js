@@ -4,12 +4,20 @@ let db;
 const dotenv = require("dotenv");
 const cors = require("cors");
 const multer = require("multer");
+const { v2: cloudinary } = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 const bcrypt = require("bcrypt");
 
 dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const API_URL = process.env.API_URL || "http://localhost:5005";
 
@@ -43,15 +51,13 @@ const path = require("path");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // ================= MULTER (UPLOAD IMAGE) =================
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "portfolio",
+    allowed_formats: ["jpg", "png", "jpeg"],
   },
 });
-
 const upload = multer({ storage });
 
 // ================= MONGODB =================
@@ -167,15 +173,13 @@ app.post(
     // Handle Gallery Images
     let galleryPaths = [];
     if (req.files && req.files["gallery"]) {
-      galleryPaths = req.files["gallery"].map(
-        (file) => `${process.env.BASE_URL}/uploads/${file.filename}`,
-      );
+      galleryPaths = req.files["gallery"].map((file) => file.path);
     }
 
     // Handle Cover Image
     let coverPath = "";
     if (req.files && req.files["image"]) {
-      coverPath = `${process.env.BASE_URL}/uploads/${req.files["image"][0].filename}`;
+      coverPath = req.files["image"][0].path;
     } else if (galleryPaths.length > 0) {
       coverPath = galleryPaths[0];
     }
@@ -277,16 +281,15 @@ app.put(
           : [];
 
       let newGalleryPaths = [];
+
       if (req.files && req.files["gallery"]) {
-        newGalleryPaths = req.files["gallery"].map(
-          (file) => `${process.env.BASE_URL}/uploads/${file.filename}`,
-        );
+        newGalleryPaths = req.files["gallery"].map((file) => file.path);
       }
 
       let finalImages = [...currentImages, ...newGalleryPaths];
 
       if (req.files && req.files["image"]) {
-        const newCoverPath = `${process.env.BASE_URL}/uploads/${req.files["image"][0].filename}`;
+        const newCoverPath = req.files["image"][0].path;
         finalImages = [
           newCoverPath,
           ...finalImages.filter((img) => img !== newCoverPath),
@@ -395,7 +398,7 @@ app.post("/api/music", checkAuth, upload.single("audio"), async (req, res) => {
     const newTrack = {
       title,
       genre,
-      audioUrl: req.file ? `${process.env.BASE_URL}/uploads/${req.file.filename}` : "",
+      audioUrl: req.file ? req.file.path : "",
     };
 
     const result = await db.collection("music").insertOne(newTrack);
@@ -426,7 +429,7 @@ app.put(
       };
 
       if (req.file) {
-        updatePayload.audioUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+        updatePayload.audioUrl = req.file.path;
       }
 
       const updatedTrack = await db
@@ -478,7 +481,7 @@ app.post("/api/resume", checkAuth, upload.single("file"), async (req, res) => {
         .json({ success: false, message: "No file provided" });
     }
 
-    const fileUrl = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+    const fileUrl = req.file.path;
 
     // Keep only one resume doc
     await db.collection("resumes").deleteMany({});
