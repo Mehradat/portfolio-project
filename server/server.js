@@ -47,8 +47,7 @@ app.use(
 );
 
 // ================= STATIC FILES =================
-const path = require("path");
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// (Removed: No longer serving /uploads, all uploads are now on Cloudinary)
 
 // ================= MULTER (UPLOAD IMAGE) =================
 const storage = new CloudinaryStorage({
