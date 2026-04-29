@@ -68,12 +68,12 @@ const imageStorage = new CloudinaryStorage({
 
 const fileStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: "portfolio/files",
-    resource_type: "raw", // Required for non-image files like PDF
-    // ❌ Cloudinary API does NOT support 'allowed_formats' for 'raw' files.
-    // Putting allowed_formats here for PDFs causes an immediate 500 Error during upload.
-    public_id: (req, file) => Date.now() + "-" + file.originalname,
+  params: async (req, file) => {
+    return {
+      folder: "portfolio/files",
+      resource_type: "raw",
+      public_id: Date.now() + "-" + file.originalname,
+    };
   },
 });
 
@@ -523,6 +523,7 @@ app.post(
   checkAuth,
   uploadFile.single("file"),
   async (req, res) => {
+    console.log("RESUME UPLOAD FILE:", req.file);
     try {
       if (!req.file) {
         return res
