@@ -27,12 +27,13 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://portfolio-project-virid-rho.vercel.app",
+    origin: true,
     credentials: true,
   }),
 );
 // ================= SESSION =================
 app.set("trust proxy", 1);
+const isProd = process.env.NODE_ENV === "production";
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "someSuperSecretKey",
@@ -40,10 +41,10 @@ app.use(
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProd, // فقط در حالت پروداکشن (Render) ترو باشه
+      sameSite: isProd ? "none" : "lax", // در لوکال lax باشه
     },
   }),
 );
