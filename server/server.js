@@ -81,7 +81,9 @@ const fileStorage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "portfolio/files",
-    resource_type: "raw", // Required for non-image files like PDF
+    resource_type: "raw",
+    type: "upload", // ✅ این خط مهمه
+    access_mode: "public", // ✅ اینم مهمه
   },
 });
 
