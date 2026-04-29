@@ -33,7 +33,11 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.includes("vercel.app")
+      ) {
         callback(null, true);
       } else {
         callback(null, true); // Fallback: allow all for now to avoid CORS errors
@@ -44,7 +48,8 @@ app.use(
 );
 // ================= SESSION =================
 app.set("trust proxy", 1);
-const isProd = process.env.NODE_ENV === "production" || process.env.RENDER === "true"; // Render sets RENDER=true
+const isProd =
+  process.env.NODE_ENV === "production" || process.env.RENDER === "true"; // Render sets RENDER=true
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "someSuperSecretKey",
@@ -543,6 +548,15 @@ app.get("/api/resume", async (req, res) => {
   try {
     const resume = await db.collection("resumes").findOne();
     res.json({ success: true, fileUrl: resume ? resume.fileUrl : null });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+app.delete("/api/resume", checkAuth, async (req, res) => {
+  try {
+    await db.collection("resumes").deleteMany({});
+    res.json({ success: true, message: "Resume deleted" });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
   }

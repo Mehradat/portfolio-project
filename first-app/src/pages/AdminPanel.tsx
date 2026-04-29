@@ -547,6 +547,28 @@ function AdminPanel() {
     }
   };
 
+  const handleCvDelete = async () => {
+    if (!window.confirm("Are you sure you want to delete the current CV?")) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/resume`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setCvUrl(null);
+        alert("CV Deleted Successfully!");
+      } else {
+        alert("Delete failed: " + data.message);
+      }
+    } catch (error) {
+      console.error("CV delete error", error);
+      alert("Something went wrong");
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
       <Header className="text-black" />
@@ -932,14 +954,23 @@ function AdminPanel() {
                 <h4 className="font-medium text-gray-700 mb-2">Current Active CV</h4>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-600 truncate mr-4">{cvUrl.split('/').pop()}</span>
-                  <a 
-                    href={cvUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex-shrink-0 text-teal-600 hover:text-teal-800 text-sm font-medium border border-teal-600 px-3 py-1 rounded"
-                  >
-                    View Current
-                  </a>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleCvDelete}
+                      type="button"
+                      className="flex-shrink-0 text-red-600 hover:text-red-800 text-sm font-medium border border-red-600 px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                    <a 
+                      href={cvUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 text-teal-600 hover:text-teal-800 text-sm font-medium border border-teal-600 px-3 py-1 rounded"
+                    >
+                      View Current
+                    </a>
+                  </div>
                 </div>
               </div>
             )}
