@@ -27,11 +27,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "http://localhost:5174", // با توجه به اسکرین‌شاتت پورت 5174 هم ممکنه باز بشه
-      "https://portfolio-project-virid-rho.vercel.app",
-    ],
+    origin: true,
     credentials: true,
   }),
 );
@@ -56,45 +52,18 @@ app.use(
 // ================= STATIC FILES =================
 // (Removed: No longer serving /uploads, all uploads are now on Cloudinary)
 
-// ================= MULTER (UPLOAD CONFIGS) =================
-const imageStorage = new CloudinaryStorage({
+// ================= MULTER (UPLOAD IMAGE) =================
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "portfolio/images",
-    allowed_formats: ["jpg", "png", "jpeg", "webp", "gif"],
-    public_id: (req, file) => Date.now() + "-" + file.originalname,
+    folder: "portfolio",
+    allowed_formats: ["jpg", "png", "jpeg"],
   },
 });
-
-const fileStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    return {
-      folder: "portfolio/files",
-      resource_type: "raw",
-      public_id: Date.now() + "-" + file.originalname,
-    };
-  },
-});
-
-const audioStorage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: "portfolio/audio",
-    resource_type: "video", // MUST be video for audio in Cloudinary
-    allowed_formats: ["mp3", "wav", "ogg"],
-  },
-});
-
-const uploadImage = multer({ storage: imageStorage });
-const uploadFile = multer({ storage: fileStorage });
-const uploadAudio = multer({ storage: audioStorage });
+const upload = multer({ storage });
 
 // ================= MONGODB =================
-MongoClient.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+MongoClient.connect(process.env.MONGO_URI)
   .then((client) => {
     console.log("✅ Mongo connected");
     db = client.db();
@@ -196,7 +165,7 @@ app.get("/api/projects/:id", async (req, res) => {
 app.post(
   "/api/projects",
   checkAuth,
-  uploadImage.fields([
+  upload.fields([
     { name: "image", maxCount: 1 },
     { name: "gallery", maxCount: 20 },
   ]),
@@ -274,7 +243,7 @@ app.put("/api/projects/order", checkAuth, async (req, res) => {
 app.put(
   "/api/projects/:id",
   checkAuth,
-  uploadImage.fields([
+  upload.fields([
     { name: "image", maxCount: 1 },
     { name: "gallery", maxCount: 20 },
   ]),
@@ -418,46 +387,34 @@ app.get("/api/music", async (req, res) => {
 });
 
 // 🎵 CREATE MUSIC (Protected)
-app.post(
-  "/api/music",
-  checkAuth,
-  uploadAudio.single("audio"),
-  async (req, res) => {
-    const { title, genre } = req.body;
+app.post("/api/music", checkAuth, upload.single("audio"), async (req, res) => {
+  const { title, genre } = req.body;
 
-    try {
-      if (!title || !genre) {
-        return res
-          .status(400)
-          .json({ success: false, message: "Title and genre are required" });
-      }
-
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          message: "Audio file is required",
-        });
-      }
-
-      const newTrack = {
-        title,
-        genre,
-        audioUrl: req.file.path,
-      };
-
-      const result = await db.collection("music").insertOne(newTrack);
-      res.status(201).json({ ...newTrack, _id: result.insertedId });
-    } catch (error) {
-      res.status(500).json({ success: false, message: "Server error" });
+  try {
+    if (!title || !genre) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Title and genre are required" });
     }
-  },
-);
+
+    const newTrack = {
+      title,
+      genre,
+      audioUrl: req.file ? req.file.path : "",
+    };
+
+    const result = await db.collection("music").insertOne(newTrack);
+    res.status(201).json({ ...newTrack, _id: result.insertedId });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 // 🎵 UPDATE MUSIC (Protected)
 app.put(
   "/api/music/:id",
   checkAuth,
-  uploadAudio.single("audio"),
+  upload.single("audio"),
   async (req, res) => {
     const { title, genre } = req.body;
 
@@ -518,33 +475,27 @@ app.delete("/api/music/:id", checkAuth, async (req, res) => {
 });
 
 // ================= RESUME ROUTES =================
-app.post(
-  "/api/resume",
-  checkAuth,
-  uploadFile.single("file"),
-  async (req, res) => {
-    console.log("RESUME UPLOAD FILE:", req.file);
-    try {
-      if (!req.file) {
-        return res
-          .status(400)
-          .json({ success: false, message: "No file provided" });
-      }
-
-      const fileUrl = req.file.path;
-
-      // Keep only one resume doc
-      await db.collection("resumes").deleteMany({});
-      const newResume = { fileUrl };
-      await db.collection("resumes").insertOne(newResume);
-
-      res.json({ success: true, message: "Resume uploaded", fileUrl });
-    } catch (error) {
-      console.error("Resume upload error:", error);
-      res.status(500).json({ success: false, message: "Server error" });
+app.post("/api/resume", checkAuth, upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No file provided" });
     }
-  },
-);
+
+    const fileUrl = req.file.path;
+
+    // Keep only one resume doc
+    await db.collection("resumes").deleteMany({});
+    const newResume = { fileUrl };
+    await db.collection("resumes").insertOne(newResume);
+
+    res.json({ success: true, message: "Resume uploaded", fileUrl });
+  } catch (error) {
+    console.error("Resume upload error:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 
 app.get("/api/resume", async (req, res) => {
   try {
@@ -574,11 +525,4 @@ const PORT = process.env.PORT || 5005;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log("==== CLOUDINARY CONFIG ====");
-  console.log("CLOUD_NAME:", process.env.CLOUDINARY_CLOUD_NAME);
-  console.log("API_KEY:", process.env.CLOUDINARY_API_KEY);
-  console.log(
-    "API_SECRET:",
-    process.env.CLOUDINARY_API_SECRET ? "EXISTS" : "MISSING",
-  );
 });
