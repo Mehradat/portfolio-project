@@ -25,15 +25,26 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 app.use(express.json());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "https://portfolio-project-virid-rho.vercel.app",
+];
 app.use(
   cors({
-    origin: true,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin) || origin.includes("vercel.app")) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Fallback: allow all for now to avoid CORS errors
+      }
+    },
     credentials: true,
   }),
 );
 // ================= SESSION =================
 app.set("trust proxy", 1);
-const isProd = process.env.NODE_ENV === "production";
+const isProd = process.env.NODE_ENV === "production" || process.env.RENDER === "true"; // Render sets RENDER=true
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "someSuperSecretKey",
