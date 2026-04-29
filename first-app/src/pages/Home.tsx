@@ -21,14 +21,13 @@ import {
   REVEAL_TRANSITION,
 } from "../config";
 
-const RevealOnScroll = ({ children, className = "" }: { children: ReactNode; className?: string }) => (
+const RevealOnScroll = ({ children, className = "", delay = 0 }: { children: ReactNode; className?: string, delay?: number }) => (
   <motion.div
     className={className}
-    variants={REVEAL_FROM_LEFT}
-    initial="hidden"
-    whileInView="visible"
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.1 }}
-    transition={REVEAL_TRANSITION}
+    transition={{ duration: 0.8, ease: "easeOut", delay }}
   >
     {children}
   </motion.div>
@@ -39,12 +38,16 @@ function Home() {
         <div className="text-white min-h-screen overflow-x-hidden">
       <ThreeBackground />
       
-      {/* Container for Header and Hero */}
-      <div className="relative isolate overflow-hidden pb-20 sm:pb-24 lg:pb-32">
+      {/* Header outside of Hero Container to prevent z-index issues */}
+      <div className="relative z-[200]">
+        <Header />
+      </div>
+
+      {/* Container for Hero */}
+      <div className="relative isolate overflow-clip pb-20 sm:pb-24 lg:pb-32">
         <div className="relative z-50">
-          <Header />
             {/* Hero Section */}
-            <main className="font-serif px-4 sm:px-6 lg:px-10 py-10 sm:py-14 lg:py-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12 min-h-[70vh] lg:min-h-137.5">
+            <main className="font-serif px-4 sm:px-6 lg:px-10 pt-8 sm:pt-16 lg:pt-16 lg:pb-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12 min-h-[70vh] lg:min-h-137.5">
               <div className="w-full space-y-5 sm:space-y-6 lg:pl-16 xl:pl-24 max-w-2xl order-2 lg:order-1">
                 <RevealOnScroll>
                     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif leading-tight text-white max-w-xl">

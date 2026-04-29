@@ -63,8 +63,9 @@ function Header({ className = "text-white" }: { className?: string }) {
   };
 
   return (
+    <>
     <header 
-      className={`sticky top-0 z-[100] md:relative md:z-auto font-sans transition-all duration-300 border-b ${
+      className={`fixed w-full top-0 left-0 z-[100] font-sans transition-all duration-300 border-b ${
         scrolled 
           ? className.includes("text-slate-9") || className.includes("text-black") 
             ? "bg-white/95 backdrop-blur-md shadow-sm border-slate-200" 
@@ -117,10 +118,16 @@ function Header({ className = "text-white" }: { className?: string }) {
                 { name: "Game", href: "/game" },
                 { name: "Contact", href: "/contact" },
                 { name: "About", href: "/about" }
-              ].map((item) => {
+              ].map((item, i) => {
                 const isActive = currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href));
                 return (
-                  <li key={item.name} className="relative group">
+                  <li 
+                    key={item.name} 
+                    className={`relative group md:translate-x-0 md:opacity-100 transition-all duration-500 ease-out ${
+                      isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
+                    }`}
+                    style={{ transitionDelay: isMenuOpen ? `${i * 100 + 200}ms` : '0ms' }}
+                  >
                     <a
                       href={item.href}
                       className={`block px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-400 md:px-0 md:py-0 ${isActive ? "text-yellow-400" : ""}`}
@@ -138,7 +145,12 @@ function Header({ className = "text-white" }: { className?: string }) {
 
               {isAdmin && (
                 <>
-                  <li className="relative group">
+                  <li 
+                    className={`relative group md:translate-x-0 md:opacity-100 transition-all duration-500 ease-out ${
+                      isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
+                    }`}
+                    style={{ transitionDelay: isMenuOpen ? '800ms' : '0ms' }}
+                  >
                     <a 
                       href="/admin-panel" 
                       className="flex items-center gap-2 px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-400 md:px-0 md:py-0"
@@ -152,7 +164,12 @@ function Header({ className = "text-white" }: { className?: string }) {
                     </a>
                   </li>
                   
-                  <li className="relative group">
+                  <li 
+                    className={`relative group md:translate-x-0 md:opacity-100 transition-all duration-500 ease-out ${
+                      isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
+                    }`}
+                    style={{ transitionDelay: isMenuOpen ? '900ms' : '0ms' }}
+                  >
                     <button 
                       onClick={handleLogout}
                       className="flex items-center gap-2 px-3 py-2 text-sm sm:text-base transition-colors hover:text-red-400 cursor-pointer md:px-0 md:py-0"
@@ -172,6 +189,9 @@ function Header({ className = "text-white" }: { className?: string }) {
         </nav>
       </div>
     </header>
+    {/* Spacer to prevent content from going under the fixed header */}
+    <div className="h-[73px] sm:h-[89px] w-full shrink-0"></div>
+    </>
   );
 }
 
