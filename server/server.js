@@ -32,6 +32,8 @@ app.use(
   }),
 );
 // ================= SESSION =================
+app.set("trust proxy", 1);
+const isProd = process.env.NODE_ENV === "production";
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "someSuperSecretKey",
@@ -41,7 +43,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: false, // Set to true if using HTTPS
+      secure: isProd, // فقط در حالت پروداکشن (Render) ترو باشه
+      sameSite: isProd ? "none" : "lax", // در لوکال lax باشه
     },
   }),
 );
