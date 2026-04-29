@@ -126,6 +126,4 @@ export const TIMELINE_VIEWPORT = {
   margin: "-100px",
 };
 
-// Toggle these depending on whether you are testing locally or deploying
-// export const API_URL = "https://portfolio-project-3otb.onrender.com";
-export const API_URL = "http://localhost:5005";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5005";
