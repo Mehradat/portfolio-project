@@ -171,6 +171,83 @@ app.get("/api/check-auth", (req, res) => {
   }
 });
 
+// ================= USER MANAGEMENT =================
+app.get("/api/users", checkAuth, async (req, res) => {
+  try {
+    const users = await db
+      .collection("users")
+      .find({})
+      .project({ password: 0 })
+      .toArray();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users" });
+  }
+});
+
+app.post("/api/users", checkAuth, async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password)
+    return res.status(400).json({ message: "Username and password required" });
+
+  try {
+    const existingUser = await db.collection("users").findOne({ username });
+    if (existingUser)
+      return res.status(400).json({ message: "Username already exists" });
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = {
+      username,
+      password: hashedPassword,
+      createdAt: new Date().toISOString(),
+    };
+    const result = await db.collection("users").insertOne(newUser);
+    res.status(201).json({ _id: result.insertedId, username });
+  } catch (error) {
+    res.status(500).json({ message: "Error creating user" });
+  }
+});
+
+app.put("/api/users/:id", checkAuth, async (req, res) => {
+  const { id } = req.params;
+  const { username, password } = req.body;
+
+  try {
+    const updates = {};
+    if (username) {
+      const existingUser = await db
+        .collection("users")
+        .findOne({ username, _id: { $ne: new ObjectId(id) } });
+      if (existingUser)
+        return res.status(400).json({ message: "Username already exists" });
+      updates.username = username;
+    }
+    if (password && password.length > 0) {
+      updates.password = await bcrypt.hash(password, 10);
+    }
+
+    if (Object.keys(updates).length === 0)
+      return res.status(400).json({ message: "No updates provided" });
+
+    await db
+      .collection("users")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
+    res.json({ message: "User updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user" });
+  }
+});
+
+app.delete("/api/users/:id", checkAuth, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await db.collection("users").deleteOne({ _id: new ObjectId(id) });
+    res.json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting user" });
+  }
+});
+
 // 📥 GET ALL PROJECTS
 app.get("/api/projects", async (req, res) => {
   const projects = await db

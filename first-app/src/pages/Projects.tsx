@@ -34,6 +34,13 @@ function Projects() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
+  // Mouse drag scrolling for thumbnails
+  const [isDraggingThumbnails, setIsDraggingThumbnails] = useState(false);
+  const thumbnailContainerRef = React.useRef<HTMLDivElement>(null);
+  const dragStartX = React.useRef(0);
+  const dragScrollLeft = React.useRef(0);
+  const hasDragged = React.useRef(false);
+
   // Fetch data from backend
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
@@ -44,6 +51,16 @@ function Projects() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // Automatically scroll to the active thumbnail in the lightbox
+  useEffect(() => {
+    if (isLightboxOpen && lightboxImages.length > 0) {
+      const thumb = document.getElementById(`lightbox-thumb-${lightboxIndex}`);
+      if (thumb) {
+        thumb.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }
+  }, [lightboxIndex, isLightboxOpen, lightboxImages.length]);
 
   const filteredProjects =
     activeCategory === "All Projects"
@@ -341,25 +358,72 @@ function Projects() {
             ›
           </button>
 
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-            <div className="text-white text-sm bg-black/50 px-4 py-2 rounded-full">
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 w-full max-w-[95vw] md:max-w-2xl px-4">
+            <div className="text-white text-sm bg-black/50 px-4 py-2 rounded-full mb-1 shrink-0">
               {lightboxIndex + 1} / {lightboxImages.length}
             </div>
 
-            <div className="flex items-center gap-2 bg-black/40 px-3 py-2 rounded-full">
+            <div 
+              ref={thumbnailContainerRef}
+              className={`flex items-center justify-start md:justify-center gap-3 bg-black/60 px-4 py-3 rounded-2xl md:rounded-full w-full overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden transition-all select-none ${
+                isDraggingThumbnails ? "cursor-grabbing snap-none" : "cursor-grab snap-x snap-mandatory"
+              }`}
+              onClick={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+              onTouchEnd={(e) => e.stopPropagation()}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+                setIsDraggingThumbnails(true);
+                hasDragged.current = false;
+                if (thumbnailContainerRef.current) {
+                  dragStartX.current = e.pageX - thumbnailContainerRef.current.offsetLeft;
+                  dragScrollLeft.current = thumbnailContainerRef.current.scrollLeft;
+                }
+              }}
+              onMouseLeave={() => {
+                if (isDraggingThumbnails) setIsDraggingThumbnails(false);
+              }}
+              onMouseUp={() => {
+                if (isDraggingThumbnails) {
+                  // We delay setting this to false so click events have time to read the state
+                  setTimeout(() => setIsDraggingThumbnails(false), 50);
+                }
+              }}
+              onMouseMove={(e) => {
+                if (!isDraggingThumbnails || !thumbnailContainerRef.current) return;
+                e.preventDefault(); // Prevent text selection/image dragging
+                
+                const x = e.pageX - thumbnailContainerRef.current.offsetLeft;
+                const walk = (x - dragStartX.current) * 2; // Scroll speed multiplier
+                if (Math.abs(walk) > 10) { // Threshold to count as a drag
+                  hasDragged.current = true;
+                }
+                
+                thumbnailContainerRef.current.scrollLeft = dragScrollLeft.current - walk;
+              }}
+            >
               {lightboxImages.map((img, idx) => (
                 <button
                   key={`lightbox-thumb-${idx}`}
+                  id={`lightbox-thumb-${idx}`}
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
+                    // Prevent click if we dragged
+                    if (hasDragged.current) {
+                      e.preventDefault();
+                      return;
+                    }
                     setLightboxIndex(idx);
                   }}
-                  className={`w-12 h-12 rounded-md overflow-hidden border-2 transition-all ${
-                    idx === lightboxIndex ? "border-yellow-400 scale-105" : "border-transparent opacity-70 hover:opacity-100"
+                  className={`shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${isDraggingThumbnails ? "snap-align-none" : "snap-center"} ${
+                    idx === lightboxIndex 
+                      ? "border-yellow-400 w-16 h-16 md:w-20 md:h-20 shadow-[0_0_15px_rgba(250,204,21,0.5)] z-10" 
+                      : "border-transparent w-12 h-12 md:w-14 md:h-14 opacity-50 hover:opacity-100"
                   }`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} draggable="false" className="w-full h-full object-cover pointer-events-none select-none" />
                 </button>
               ))}
             </div>
