@@ -32,6 +32,12 @@ interface MusicTrack {
   createdAt?: string;
 }
 
+interface AdminUser {
+  _id: string;
+  username: string;
+  createdAt?: string;
+}
+
 const categories = [
   "Music + Code Integration",
   "Full-Stack Development",
@@ -42,6 +48,15 @@ function AdminPanel() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [tracks, setTracks] = useState<MusicTrack[]>([]);
+  const [users, setUsers] = useState<AdminUser[]>([]);
+
+  // User Management Forms
+  const [newUsername, setNewUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [editUserId, setEditUserId] = useState<string | null>(null);
+  const [editUserUsername, setEditUserUsername] = useState("");
+  const [editUserPassword, setEditUserPassword] = useState("");
+  const [isUserLoading, setIsUserLoading] = useState(false);
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Full-Stack Development"); // Default
@@ -51,7 +66,7 @@ function AdminPanel() {
   const [projectImages, setProjectImages] = useState<File[]>([]);
   const [isAdding, setIsAdding] = useState(false);
 
-  const [activeSection, setActiveSection] = useState<"projects" | "contacts" | "music" | "cv">("projects");
+  const [activeSection, setActiveSection] = useState<"projects" | "contacts" | "music" | "cv" | "users">("projects");
 
   const [trackTitle, setTrackTitle] = useState("");
   const [trackGenre, setTrackGenre] = useState("");
@@ -120,6 +135,17 @@ function AdminPanel() {
     }
   };
 
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/users`, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      const data = await res.json();
+      setUsers(data);
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    }
+  };
+
   const fetchResume = async () => {
     try {
       const res = await fetch(`${API_URL}/api/resume`);
@@ -145,6 +171,7 @@ function AdminPanel() {
           fetchContacts();
           fetchMusic();
           fetchResume();
+          fetchUsers();
         }
       } catch (err) {
          window.location.pathname = "/admin";
@@ -569,6 +596,83 @@ function AdminPanel() {
     }
   };
 
+  // --- USER MANAGEMENT ---
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUserLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/users`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ username: newUsername, password: newPassword }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setNewUsername("");
+        setNewPassword("");
+        fetchUsers();
+        alert("User added successfully!");
+      } else {
+        alert(data.message || "Failed to add user.");
+      }
+    } catch (error) {
+      console.error("Error adding user:", error);
+    } finally {
+      setIsUserLoading(false);
+    }
+  };
+
+  const handleUpdateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editUserId) return;
+    setIsUserLoading(true);
+    try {
+      const updates: any = {};
+      if (editUserUsername) updates.username = editUserUsername;
+      if (editUserPassword) updates.password = editUserPassword;
+
+      const res = await fetch(`${API_URL}/api/users/${editUserId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(updates),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setEditUserId(null);
+        setEditUserUsername("");
+        setEditUserPassword("");
+        fetchUsers();
+        alert("User updated successfully!");
+      } else {
+        alert(data.message || "Failed to update user.");
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+    } finally {
+      setIsUserLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (id: string, username: string) => {
+    if (!window.confirm(`Are you sure you want to delete user ${username}?`)) return;
+    try {
+      const res = await fetch(`${API_URL}/api/users/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (res.ok) {
+        fetchUsers();
+      } else {
+        alert("Failed to delete user.");
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800">
       <Header className="text-black" />
@@ -617,6 +721,16 @@ function AdminPanel() {
               }`}
             >
               Resume/CV
+            </button>
+            <button
+              onClick={() => setActiveSection("users")}
+              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+                activeSection === "users"
+                  ? "bg-indigo-600 text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              Users
             </button>
           </div>
         </div>
@@ -974,6 +1088,132 @@ function AdminPanel() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* USERS SECTION */}
+        {activeSection === "users" && (
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h3 className="text-xl font-semibold mb-4 border-b pb-2">Add New User</h3>
+              <form onSubmit={handleAddUser} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                  <input
+                    type="text"
+                    required
+                    value={newUsername}
+                    onChange={e => setNewUsername(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md"
+                    placeholder="admin123"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                  <input
+                    type="password"
+                    required
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md"
+                    placeholder="••••••••"
+                  />
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    disabled={isUserLoading}
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:bg-indigo-400"
+                  >
+                    {isUserLoading ? "Adding..." : "Add User"}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="p-4 border-b bg-gray-50 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-gray-800">Existing Users</h3>
+                <span className="text-sm font-medium bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full">{users.length} Users</span>
+              </div>
+              <div className="divide-y divide-gray-200">
+                {users.map(user => (
+                  <div key={user._id} className="p-4 sm:flex items-center justify-between hover:bg-gray-50 transition-colors">
+                    {editUserId === user._id ? (
+                      <form onSubmit={handleUpdateUser} className="w-full flex flex-col sm:flex-row gap-4 items-center">
+                        <input
+                          type="text"
+                          required
+                          value={editUserUsername}
+                          onChange={e => setEditUserUsername(e.target.value)}
+                          className="w-full sm:w-auto px-3 py-1 border border-indigo-300 rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                          placeholder="Username"
+                        />
+                        <input
+                          type="password"
+                          value={editUserPassword}
+                          onChange={e => setEditUserPassword(e.target.value)}
+                          className="w-full sm:w-auto px-3 py-1 border border-indigo-300 rounded focus:ring-1 focus:ring-indigo-500 focus:outline-none"
+                          placeholder="New password (optional)"
+                        />
+                        <div className="flex gap-2 w-full sm:w-auto ml-auto">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditUserId(null);
+                              setEditUserUsername("");
+                              setEditUserPassword("");
+                            }}
+                            className="flex-1 sm:flex-none text-sm text-gray-600 hover:text-gray-900 border px-3 py-1 rounded"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={isUserLoading}
+                            className="flex-1 sm:flex-none bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-3 py-1 rounded disabled:bg-indigo-400"
+                          >
+                            Save
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      <>
+                        <div className="mb-4 sm:mb-0">
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-gray-900">{user.username}</h4>
+                            <span className="text-xs text-gray-400 font-mono">ID: {user._id.slice(-6)}</span>
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => {
+                              setEditUserId(user._id);
+                              setEditUserUsername(user.username);
+                              setEditUserPassword("");
+                            }}
+                            className="text-indigo-600 hover:text-indigo-900 text-sm font-medium bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition-colors"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDeleteUser(user._id, user.username)}
+                            className="text-red-600 hover:text-red-900 text-sm font-medium bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded transition-colors"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                ))}
+                {users.length === 0 && (
+                  <div className="p-8 text-center text-gray-500">
+                    No users found.
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
       </main>

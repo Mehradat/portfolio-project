@@ -30,6 +30,10 @@ function Projects() {
   const [lightboxImages, setLightboxImages] = useState<string[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
+  // Swipe handling states
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
   // Fetch data from backend
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
@@ -102,6 +106,41 @@ function Projects() {
     }));
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEndProject = (projectId: string, total: number) => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isLeftSwipe) {
+      nextProjectImage(projectId, total);
+    } else if (isRightSwipe) {
+      prevProjectImage(projectId, total);
+    }
+  };
+
+  const handleTouchEndLightbox = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    
+    if (isLeftSwipe) {
+      nextImage();
+    } else if (isRightSwipe) {
+      prevImage();
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800">
       <Header className="text-slate-900" />
@@ -144,7 +183,12 @@ function Projects() {
 
                   return (
                     <>
-                      <div className="group relative rounded-xl overflow-hidden border border-slate-300/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-400/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-100">
+                      <div 
+                        className="group relative rounded-xl overflow-hidden border border-slate-300/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-400/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-100"
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={() => handleTouchEndProject(project._id, images.length)}
+                      >
                         <img
                           src={currentImage}
                           alt={project.title}
@@ -250,6 +294,9 @@ function Projects() {
         <div
           className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={closeLightbox}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEndLightbox}
         >
           <button
             type="button"
