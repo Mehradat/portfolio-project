@@ -53,8 +53,8 @@ function Header({ className = "text-white" }: { className?: string }) {
     try {
       await fetch(`${API_URL}/api/logout`, {
         method: "POST",
-        credentials: "include",
       });
+      localStorage.removeItem("adminToken");
       // Redirect to home and reload to clear state
       window.location.href = "/";
     } catch (error) {

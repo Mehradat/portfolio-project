@@ -19,13 +19,13 @@ function Admin() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
 
-      if (data.success) {
+      if (data.success && data.token) {
+        localStorage.setItem("adminToken", data.token);
         window.location.pathname = "/admin-panel";
       } else {
         setError("Invalid credentials. Please try again.");
