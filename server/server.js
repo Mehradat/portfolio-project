@@ -10,7 +10,6 @@ const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default;
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 dotenv.config();
 
@@ -107,19 +106,9 @@ MongoClient.connect(process.env.MONGO_URI)
   .catch((err) => console.log(err));
 
 // ================= AUTH MIDDLEWARE =================
-const JWT_SECRET = process.env.SESSION_SECRET || "someSuperSecretKey";
-
 const checkAuth = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: "Unauthorized: Invalid or expired token" });
-      }
-      req.user = decoded;
-      next();
-    });
+  if (req.session && req.session.user) {
+    next();
   } else {
     res.status(401).json({ message: "Unauthorized: Please login first" });
   }
@@ -127,7 +116,7 @@ const checkAuth = (req, res, next) => {
 
 // ================= ROUTES =================
 
-// 🔐 LOGIN (JWT)
+// 🔐 LOGIN (Mongo + Session)
 app.post("/api/login", async (req, res) => {
   const { username, password } = req.body;
 
@@ -150,13 +139,12 @@ app.post("/api/login", async (req, res) => {
       });
     }
 
-    const tokenPayload = {
+    req.session.user = {
       id: user._id.toString(),
       username: user.username,
     };
-    const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '1d' });
 
-    res.json({ success: true, user: tokenPayload, token });
+    res.json({ success: true, user: req.session.user });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -167,12 +155,20 @@ app.post("/api/login", async (req, res) => {
 
 // 🔓 LOGOUT
 app.post("/api/logout", (req, res) => {
-  res.json({ success: true, message: "Logged out successfully" });
+  req.session.destroy((err) => {
+    if (err) return res.status(500).json({ message: "Could not logout" });
+    res.clearCookie("connect.sid");
+    res.json({ message: "Logged out successfully" });
+  });
 });
 
 // 🛡 CHECK AUTH STATUS
-app.get("/api/check-auth", checkAuth, (req, res) => {
-  res.json({ isAuthenticated: true, user: req.user });
+app.get("/api/check-auth", (req, res) => {
+  if (req.session && req.session.user) {
+    res.json({ isAuthenticated: true, user: req.session.user });
+  } else {
+    res.json({ isAuthenticated: false });
+  }
 });
 
 // ================= USER MANAGEMENT =================

@@ -110,12 +110,9 @@ function AdminPanel() {
 
   const fetchContacts = async () => {
     try {
-        const token = localStorage.getItem("adminToken");
-        const res = await fetch(`${API_URL}/api/contacts`, {
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        });
+      const res = await fetch(`${API_URL}/api/contacts`, {
+        credentials: "include",
+      });
 
       if (!res.ok) throw new Error("Failed to fetch contacts");
 
@@ -140,10 +137,7 @@ function AdminPanel() {
 
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("adminToken");
-      const res = await fetch(`${API_URL}/api/users`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
+      const res = await fetch(`${API_URL}/api/users`, { credentials: "include" });
       if (!res.ok) throw new Error("Failed to fetch users");
       const data = await res.json();
       setUsers(data);
@@ -168,17 +162,9 @@ function AdminPanel() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem("adminToken");
-        if (!token) {
-          window.location.pathname = "/admin";
-          return;
-        }
-        const res = await fetch(`${API_URL}/api/check-auth`, {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_URL}/api/check-auth`, { credentials: "include" });
         const data = await res.json();
         if (!data.isAuthenticated) {
-          localStorage.removeItem("adminToken");
           window.location.pathname = "/admin";
         } else {
           fetchProjects();
@@ -224,10 +210,9 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/projects`, {
         method: "POST",
-        
+        credentials: "include", // SESSION COOKIE
         body: formData,
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+      });
 
       if (!res.ok) throw new Error("Failed");
 
@@ -253,8 +238,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/projects/${id}`, {
         method: "DELETE",
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}`, "Content-Type": "application/json" },
-        
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // SESSION COOKIE
         body: JSON.stringify({ password: "123456" }),
       });
 
@@ -274,9 +259,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/contacts/${id}`, {
         method: "DELETE",
-        
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+        credentials: "include",
+      });
 
       if (!res.ok) throw new Error("Failed to delete contact");
 
@@ -324,10 +308,9 @@ function AdminPanel() {
 
       const res = await fetch(endpoint, {
         method,
-        
+        credentials: "include",
         body: formData,
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+      });
 
       if (!res.ok) throw new Error("Failed to save track");
 
@@ -356,9 +339,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/music/${id}`, {
         method: "DELETE",
-        
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+        credentials: "include",
+      });
 
       if (!res.ok) throw new Error("Failed to delete track");
 
@@ -377,8 +359,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/projects/order`, {
         method: "PUT",
-        
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}`, "Content-Type": "application/json" },
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ orderedIds }),
       });
 
@@ -544,10 +526,9 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/projects/${editingProjectId}`, {
         method: "PUT",
-        
+        credentials: "include",
         body: formData,
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+      });
 
       if (!res.ok) throw new Error("Failed to update project");
 
@@ -573,10 +554,9 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/resume`, {
         method: "POST",
-        
+        credentials: "include",
         body: formData,
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+      });
 
       const data = await res.json();
       if (data.success) {
@@ -600,9 +580,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/resume`, {
         method: "DELETE",
-        
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+        credentials: "include",
+      });
 
       const data = await res.json();
       if (data.success) {
@@ -624,8 +603,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/users`, {
         method: "POST",
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}`, "Content-Type": "application/json" },
-        
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ username: newUsername, password: newPassword }),
       });
       const data = await res.json();
@@ -655,8 +634,8 @@ function AdminPanel() {
 
       const res = await fetch(`${API_URL}/api/users/${editUserId}`, {
         method: "PUT",
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}`, "Content-Type": "application/json" },
-        
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(updates),
       });
 
@@ -682,9 +661,8 @@ function AdminPanel() {
     try {
       const res = await fetch(`${API_URL}/api/users/${id}`, {
         method: "DELETE",
-        
-      
-        headers: { "Authorization": `Bearer ${localStorage.getItem("adminToken")}` },});
+        credentials: "include",
+      });
       if (res.ok) {
         fetchUsers();
       } else {
