@@ -25,15 +25,20 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 app.use(express.json());
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://mehradata.com",
-  "https://www.mehradata.com",
-];
-
+const allowedOrigins = ["http://localhost:5173", "http://localhost:3000"];
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.includes("vercel.app")
+      ) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Fallback: allow all for now to avoid CORS errors
+      }
+    },
     credentials: true,
   }),
 );
@@ -50,8 +55,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProd, // فقط در حالت پروداکشن (Render) ترو باشه
+      sameSite: isProd ? "none" : "lax", // در لوکال lax باشه
     },
   }),
 );
