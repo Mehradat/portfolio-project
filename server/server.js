@@ -27,22 +27,13 @@ const app = express();
 app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",
-  "http://localhost:3000",
-  "https://portfolio-project-virid-rho.vercel.app",
+  "https://mehradata.com",
+  "https://www.mehradata.com",
 ];
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (
-        !origin ||
-        allowedOrigins.includes(origin) ||
-        origin.includes("vercel.app")
-      ) {
-        callback(null, true);
-      } else {
-        callback(null, true); // Fallback: allow all for now to avoid CORS errors
-      }
-    },
+    origin: allowedOrigins,
     credentials: true,
   }),
 );
@@ -59,8 +50,8 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: isProd, // فقط در حالت پروداکشن (Render) ترو باشه
-      sameSite: isProd ? "none" : "lax", // در لوکال lax باشه
+      secure: true,
+      sameSite: "none",
     },
   }),
 );
