@@ -5,7 +5,7 @@ import logoBlack from "../assets/logo-black.png";
 import { API_URL } from "../config";
 import ThemeToggle from "./ThemeToggle";
 
-function Header({ className = "text-white" }: { className?: string }) {
+function Header({ className = "text-slate-900 dark:text-white transition-colors" }: { className?: string }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [menuSpinKey, setMenuSpinKey] = useState(0);
@@ -66,14 +66,10 @@ function Header({ className = "text-white" }: { className?: string }) {
   return (
     <>
     <header 
-      className={`fixed w-full top-0 left-0 z-[100] font-sans transition-all duration-300 border-b ${
+                  className={`fixed w-full top-0 left-0 z-[100] font-sans transition-all duration-300 border-b ${
         scrolled 
-          ? className.includes("text-slate-9") || className.includes("text-black") 
-            ? "bg-white/95 backdrop-blur-md shadow-sm border-slate-200" 
-            : "bg-slate-950/95 backdrop-blur-md shadow-md border-white/10"
-          : className.includes("text-slate-9") || className.includes("text-black")
-            ? "bg-transparent border-slate-200"
-            : "bg-transparent border-white/10"
+          ? "bg-white shadow-sm border-slate-200 dark:bg-slate-950/95 dark:backdrop-blur-md dark:shadow-md dark:border-white/10"
+          : "bg-transparent border-transparent dark:border-transparent"
       } ${className}`}
     >
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-10">
@@ -118,7 +114,7 @@ function Header({ className = "text-white" }: { className?: string }) {
         <nav
           className={`absolute left-0 top-full z-50 w-full px-4 pt-3 md:static md:w-auto md:px-0 md:pt-0 md:pointer-events-auto ${isMenuOpen ? "pointer-events-auto opacity-100 translate-y-0 scale-100 max-h-[80vh]" : "pointer-events-none opacity-0 -translate-y-4 scale-95 max-h-0 md:opacity-100 md:translate-y-0 md:scale-100 md:max-h-none"} transform origin-top transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:transition-none`}
         >
-          <div className="rounded-3xl border border-white/10 bg-slate-950/95 text-white p-4 shadow-2xl backdrop-blur-xl md:border-0 md:bg-transparent md:text-inherit md:p-0 md:shadow-none">
+          <div className="rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-white/10 bg-white dark:bg-slate-950/95 text-slate-900 dark:text-white p-4 shadow-2xl dark:backdrop-blur-xl md:border-0 md:bg-transparent md:dark:bg-transparent md:text-inherit md:p-0 md:shadow-none">
             <ul className="flex flex-col gap-2 md:flex-row md:items-center md:gap-8 lg:gap-10 xl:gap-12">
               {[
                 { name: "Home", href: "/" },
@@ -139,7 +135,7 @@ function Header({ className = "text-white" }: { className?: string }) {
                   >
                     <a
                       href={item.href}
-                      className={`block px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-400 md:px-0 md:py-0 ${isActive ? "text-yellow-400" : ""}`}
+                      className={`block px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-500 dark:hover:text-yellow-400 md:px-0 md:py-0 ${isActive ? "text-yellow-500" : ""}`}
                       onClick={(e) => {
                         e.preventDefault();
                         navigate(item.href);
@@ -147,7 +143,7 @@ function Header({ className = "text-white" }: { className?: string }) {
                     >
                       {item.name}
                     </a>
-                    <span className="absolute left-3 -bottom-1 h-0.5 w-0 bg-yellow-400 transition-all duration-300 ease-out group-hover:w-[calc(100%-1.5rem)] md:left-0 md:-bottom-2 md:group-hover:w-full"></span>
+                    <span className="absolute left-3 -bottom-1 h-0.5 w-0 bg-yellow-500 dark:bg-yellow-400 transition-all duration-300 ease-out group-hover:w-[calc(100%-1.5rem)] md:left-0 md:-bottom-2 md:group-hover:w-full"></span>
                   </li>
                 );
               })}
@@ -162,7 +158,7 @@ function Header({ className = "text-white" }: { className?: string }) {
                   >
                     <a 
                       href="/admin-panel" 
-                      className="flex items-center gap-2 px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-400 md:px-0 md:py-0"
+                      className="flex items-center gap-2 px-3 py-2 text-sm sm:text-base transition-colors hover:text-yellow-500 dark:hover:text-yellow-400 md:px-0 md:py-0"
                       title="Admin Panel"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

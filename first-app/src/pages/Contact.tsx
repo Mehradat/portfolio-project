@@ -60,11 +60,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     });
   };
 
-  const inputClasses = "w-full bg-slate-50 dark:bg-slate-900/50 border-b-2 border-slate-200 dark:border-white/10 px-4 py-3 outline-none transition-all duration-300 focus:border-yellow-400 focus:bg-white dark:bg-white/10 placeholder-slate-400";
+  const inputClasses = "w-full bg-slate-50 dark:bg-slate-900/50 border-b-2 border-slate-200 dark:border-slate-200 dark:border-white/10 px-4 py-3 outline-none transition-all duration-300 focus:border-yellow-400 focus:bg-white dark:bg-transparent placeholder-slate-400";
   const labelClasses = "block text-sm font-bold text-slate-700 dark:text-slate-200 mb-1 uppercase tracking-wider";
 
   return (
-    <div className="min-h-screen bg-white dark:bg-white/10 font-sans text-slate-800 dark:text-white selection:bg-yellow-200">
+    <div className="min-h-screen transition-colors duration-500  bg-transparent dark:bg-transparent font-sans text-slate-800 dark:text-white selection:bg-yellow-200">
       <Header className="text-slate-900 dark:text-white" />
 
       <main className="max-w-7xl mx-auto px-6 py-12 lg:py-24">
@@ -90,7 +90,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                </h1>
             </div>
 
-            <p className="text-xl text-slate-600 dark:text-slate-300 mb-12 leading-relaxed">
+            <p className="text-xl text-slate-700 dark:text-slate-300 mb-12 leading-relaxed">
               Whether you have a project in mind, a question about my work, or just want to discuss the intersection of music and code — I'm all ears.
             </p>
 
@@ -126,7 +126,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             initial="hidden"
             animate="visible"
             transition={{ ...REVEAL_TRANSITION, delay: 0.2 }}
-            className="bg-white dark:bg-white/10 rounded-[2.5rem] p-8 lg:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-slate-100 dark:border-white/10 relative overflow-hidden"
+            className="bg-white dark:bg-transparent rounded-[2.5rem] p-8 lg:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-slate-100 dark:border-slate-200 dark:border-white/10 relative overflow-hidden"
           >
              {/* Decorative blob in form corner */}
             <div className="absolute -top-12.5 -right-12.5 w-32 h-32 bg-yellow-50 rounded-full blur-2xl pointer-events-none"></div>
@@ -172,7 +172,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     onChange={(phone) =>
       setFormData({ ...formData, mobile: phone })
     }
-    inputClass="!w-full !py-3 !px-4 !bg-slate-50 dark:bg-slate-900/50 !border-b-2 !border-slate-200 dark:border-white/10 focus:!border-yellow-400 !outline-none"
+    inputClass="!w-full !py-3 !px-4 !bg-slate-50 dark:bg-slate-900/50 !border-b-2 !border-slate-200 dark:border-slate-200 dark:border-white/10 focus:!border-yellow-400 !outline-none"
     containerClass="w-full"
   />
 </div>
@@ -196,10 +196,10 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 disabled={isSubmitting || isSent}
                 className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg flex items-center justify-center gap-2
                   ${isSent 
-                    ? 'bg-green-500 text-white shadow-green-200 cursor-default' 
+                    ? 'bg-green-500 text-slate-900 dark:text-white shadow-green-200 cursor-default' 
                     : isSubmitting
-                      ? 'bg-slate-200 dark:bg-white/20 text-slate-500 dark:text-slate-400 cursor-wait'
-                      : 'bg-slate-900 text-white hover:bg-yellow-400 hover:text-slate-900 dark:text-white hover:shadow-yellow-200 hover:-translate-y-1'
+                      ? 'bg-slate-200 dark:bg-slate-800 dark:bg-white/20 text-slate-500 dark:text-slate-400 cursor-wait'
+                      : 'bg-slate-900 text-slate-900 dark:text-white hover:bg-yellow-400 hover:text-slate-900 dark:text-white hover:shadow-yellow-200 hover:-translate-y-1'
                   }
                 `}
               >

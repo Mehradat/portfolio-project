@@ -1,19 +1,17 @@
 import logoWhite from "../assets/logo-white.png";
+import logoBlack from "../assets/logo-black.png";
 
 function Footer() {
   return (
-    <footer className="bg-slate-100 dark:bg-slate-950 text-slate-300 mt-24 border-t border-slate-900">
+    <footer className="bg-slate-50 dark:bg-slate-950 dark:bg-slate-950 text-slate-300 mt-24 border-t border-slate-900">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8 lg:gap-12">
           
           {/* Brand Info (takes up more space) */}
           <div className="md:col-span-12 lg:col-span-5 flex flex-col items-center md:items-start text-center md:text-left">
             <div className="mb-6 h-12 flex items-center justify-center md:justify-start">
-              <img 
-                src={logoWhite} 
-                alt="Logo" 
-                className="h-full w-auto object-contain" 
-              />
+              <img src={logoBlack} alt="Logo" className="h-full w-auto object-contain dark:hidden" />
+              <img src={logoWhite} alt="Logo" className="h-full w-auto object-contain hidden dark:block" />
             </div>
             <p className="text-slate-400 text-sm leading-relaxed max-w-md mb-8">
               Crafting digital experiences with passion and precision. 

@@ -159,7 +159,7 @@ function Projects() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-white/10 font-sans text-slate-800 dark:text-white">
+    <div className="min-h-screen transition-colors duration-500  bg-transparent dark:bg-transparent font-sans text-slate-800 dark:text-white">
       <Header className="text-slate-900 dark:text-white" />
 
       <main className="max-w-7xl mx-auto px-6 py-12">
@@ -179,7 +179,7 @@ function Projects() {
               className={`px-6 py-3 rounded-lg border-2 ${
                 activeCategory === cat
                   ? "bg-yellow-400 text-black"
-                  : "bg-white dark:bg-white/10 text-gray-500 dark:text-slate-400"
+                  : "bg-white dark:bg-transparent text-gray-500 dark:text-slate-400"
               }`}
             >
               {cat}
@@ -201,7 +201,7 @@ function Projects() {
                   return (
                     <>
                       <div 
-                        className="group relative rounded-xl overflow-hidden border border-slate-300 dark:border-white/20/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-400/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-100 dark:bg-slate-800/50"
+                        className="group relative rounded-xl overflow-hidden border border-slate-300 dark:border-white/20/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-500/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.4)] dark:hover:border-yellow-400/80 dark:hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-100 dark:bg-slate-800/50"
                         onTouchStart={handleTouchStart}
                         onTouchMove={handleTouchMove}
                         onTouchEnd={() => handleTouchEndProject(project._id, images.length)}
@@ -226,7 +226,7 @@ function Projects() {
                                   e.stopPropagation();
                                   prevProjectImage(project._id, images.length);
                                 }}
-                                className="px-3 py-1.5 text-sm rounded-lg bg-white/20 text-white hover:bg-white/30"
+                                className="px-3 py-1.5 text-sm rounded-lg bg-slate-800 dark:bg-white/20 text-white hover:bg-white/30"
                               >
                                 Previous
                               </button>
@@ -239,7 +239,7 @@ function Projects() {
                                   e.stopPropagation();
                                   nextProjectImage(project._id, images.length);
                                 }}
-                                className="px-3 py-1.5 text-sm rounded-lg bg-white/20 text-white hover:bg-white/30"
+                                className="px-3 py-1.5 text-sm rounded-lg bg-slate-800 dark:bg-white/20 text-white hover:bg-white/30"
                               >
                                 Next
                               </button>
@@ -255,7 +255,7 @@ function Projects() {
                                     setProjectImageIndex(project._id, idx);
                                   }}
                                   className={`h-2.5 rounded-full transition-all ${
-                                    idx === safeIndex ? "w-6 bg-yellow-400" : "w-2.5 bg-white/60 hover:bg-white dark:bg-white/10"
+                                    idx === safeIndex ? "w-6 bg-yellow-400" : "w-2.5 bg-white/60 hover:bg-white dark:bg-transparent"
                                   }`}
                                   aria-label={`Go to image ${idx + 1}`}
                                 />
@@ -294,7 +294,7 @@ function Projects() {
                     {project.techStack.map((t) => (
                       <span
                         key={t}
-                        className="bg-gray-200 dark:bg-white/20 px-3 py-1 rounded"
+                        className="bg-gray-200 dark:bg-slate-800 dark:bg-white/20 px-3 py-1 rounded"
                       >
                         {t}
                       </span>
@@ -321,7 +321,7 @@ function Projects() {
               e.stopPropagation();
               closeLightbox();
             }}
-            className="absolute top-6 right-6 text-white text-3xl leading-none hover:text-yellow-300"
+            className="absolute top-6 right-6 text-slate-900 dark:text-white text-3xl leading-none hover:text-yellow-300"
             aria-label="Close"
           >
             x
@@ -333,7 +333,7 @@ function Projects() {
               e.stopPropagation();
               prevImage();
             }}
-            className="absolute left-4 md:left-8 text-white text-4xl px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 hover:text-yellow-300"
+            className="absolute left-4 md:left-8 text-slate-900 dark:text-white text-4xl px-3 py-2 rounded-full bg-white/80 dark:bg-white/10 hover:bg-slate-800 dark:bg-white/20 hover:text-yellow-300"
             aria-label="Previous image"
           >
             ‹
@@ -352,14 +352,14 @@ function Projects() {
               e.stopPropagation();
               nextImage();
             }}
-            className="absolute right-4 md:right-8 text-white text-4xl px-3 py-2 rounded-full bg-white/10 hover:bg-white/20 hover:text-yellow-300"
+            className="absolute right-4 md:right-8 text-slate-900 dark:text-white text-4xl px-3 py-2 rounded-full bg-white/80 dark:bg-white/10 hover:bg-slate-800 dark:bg-white/20 hover:text-yellow-300"
             aria-label="Next image"
           >
             ›
           </button>
 
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 w-full max-w-[95vw] md:max-w-2xl px-4">
-            <div className="text-white text-sm bg-black/50 px-4 py-2 rounded-full mb-1 shrink-0">
+            <div className="text-slate-900 dark:text-white text-sm bg-black/50 px-4 py-2 rounded-full mb-1 shrink-0">
               {lightboxIndex + 1} / {lightboxImages.length}
             </div>
 

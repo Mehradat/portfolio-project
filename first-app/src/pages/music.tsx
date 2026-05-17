@@ -194,7 +194,7 @@ function Music() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-white/10 font-sans text-slate-800 dark:text-white">
+    <div className="min-h-screen transition-colors duration-500  bg-transparent dark:bg-transparent font-sans text-slate-800 dark:text-white">
       {/* Header with dark text since the background is white */}
       <Header className="text-slate-900 dark:text-white" />
 
@@ -214,7 +214,7 @@ function Music() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Main Player Card */}
-          <div className="lg:col-span-2 bg-white dark:bg-white/10 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 lg:p-12 border border-slate-100 dark:border-white/10 relative overflow-hidden">
+          <div className="lg:col-span-2 bg-white dark:bg-transparent rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 lg:p-12 border border-slate-100 dark:border-slate-200 dark:border-white/10 relative overflow-hidden">
             
             {/* Track Info */}
             <div className="mb-8 relative z-10">
@@ -239,7 +239,7 @@ function Music() {
                 return (
                  <div 
                    key={i} 
-                   className={`w-2 rounded-t-sm transition-all duration-300 ${isActive ? 'bg-yellow-400' : 'bg-slate-200 dark:bg-white/20'}`}
+                   className={`w-2 rounded-t-sm transition-all duration-300 ${isActive ? 'bg-yellow-400' : 'bg-slate-200 dark:bg-slate-800 dark:bg-white/20'}`}
                    style={{ height: `${height}%` }}
                  />
                 );
@@ -249,11 +249,11 @@ function Music() {
             {/* Progress Bar */}
             <div className="mb-8">
               <div
-                className="relative w-full h-2 bg-slate-200 dark:bg-white/20 rounded-full cursor-pointer group"
+                className="relative w-full h-2 bg-slate-200 dark:bg-slate-800 dark:bg-white/20 rounded-full cursor-pointer group"
                 onClick={handleSeek}
               >
                   <div 
-                    className="absolute top-0 left-0 h-full bg-slate-200 dark:bg-white/20 rounded-full w-full"
+                    className="absolute top-0 left-0 h-full bg-slate-200 dark:bg-slate-800 dark:bg-white/20 rounded-full w-full"
                   ></div>
                    {/* Active Progress */}
                   <div 
@@ -275,7 +275,7 @@ function Music() {
               <div className="flex items-center gap-6">
                 <button 
                   onClick={handlePrev}
-                  className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:bg-white/20 text-slate-700 dark:text-slate-200 transition"
+                  className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:bg-slate-800 dark:bg-white/20 text-slate-700 dark:text-slate-200 transition"
                 >
                   <SkipBackIcon />
                 </button>
@@ -286,7 +286,7 @@ function Music() {
                   className={`w-16 h-16 flex items-center justify-center rounded-full text-slate-900 dark:text-white shadow-lg shadow-yellow-200 transition transform hover:scale-105 ${
                     currentTrack.audioUrl
                       ? "bg-yellow-400 hover:bg-yellow-300"
-                      : "bg-slate-200 dark:bg-white/20 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                      : "bg-slate-200 dark:bg-slate-800 dark:bg-white/20 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   {isPlaying ? <PauseIcon /> : <PlayIcon />}
@@ -294,7 +294,7 @@ function Music() {
 
                 <button 
                    onClick={handleNext}
-                   className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:bg-white/20 text-slate-700 dark:text-slate-200 transition"
+                   className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800/50 hover:bg-slate-200 dark:bg-slate-800 dark:bg-white/20 text-slate-700 dark:text-slate-200 transition"
                 >
                   <SkipForwardIcon />
                 </button>
@@ -311,7 +311,7 @@ function Music() {
                   max="100" 
                   value={volume} 
                   onChange={(e) => setVolume(Number(e.target.value))}
-                  className="w-full sm:w-32 h-1.5 bg-slate-200 dark:bg-white/20 rounded-lg appearance-none cursor-pointer accent-slate-400"
+                  className="w-full sm:w-32 h-1.5 bg-slate-200 dark:bg-slate-800 dark:bg-white/20 rounded-lg appearance-none cursor-pointer accent-slate-400"
                 />
               </div>
             </div>
@@ -332,7 +332,7 @@ function Music() {
 
           {/* Playlist Sidebar */}
           <div className="lg:col-span-1">
-             <div className="bg-white dark:bg-white/10 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 border border-slate-100 dark:border-white/10 h-full">
+             <div className="bg-white dark:bg-transparent rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 border border-slate-100 dark:border-slate-200 dark:border-white/10 h-full">
                 <h3 className="text-2xl font-serif font-bold text-slate-900 dark:text-white mb-6">Playlist</h3>
                 
                 <div className="space-y-4">
@@ -358,7 +358,7 @@ function Music() {
                               {isActive ? formatTime(effectiveDuration) : "--:--"}
                             </span>
                           </div>
-                          <p className={`text-sm ${isActive ? 'text-slate-600 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
+                          <p className={`text-sm ${isActive ? 'text-slate-700 dark:text-slate-300' : 'text-slate-500 dark:text-slate-400'}`}>
                               {track.genre}
                           </p>
                         </div>

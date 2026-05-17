@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 
 @layer base {
@@ -9,6 +10,9 @@
   h5,
   h6 {
     font-family: "Playfair", serif;
+  }
+  body {
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white transition-colors duration-500;
   }
   p, body {
     font-family: "Inter", sans-serif;

@@ -192,7 +192,7 @@ function About() {
 
   return (
     <div 
-      className="min-h-screen bg-slate-50 dark:bg-slate-900/50 font-sans text-slate-800 dark:text-white overflow-x-hidden selection:bg-yellow-200"
+      className="min-h-screen transition-colors duration-500  bg-transparent dark:bg-transparent font-sans text-slate-800 dark:text-white overflow-x-hidden selection:bg-yellow-200"
       onMouseMove={handleMouseMove}
     >
       <Header className="text-slate-900 dark:text-white" />
@@ -249,7 +249,7 @@ function About() {
                             Musician. Web Developer.
                         </motion.span>
                     </h1>
-                    <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed max-w-lg">
+                    <p className="text-xl text-slate-700 dark:text-slate-300 mb-8 leading-relaxed max-w-lg">
                         I’m a creative developer and Interactive Media Management student at Sheridan College, building modern, responsive, and user-centered digital experiences.
 
                         Working across front-end and back-end development, I turn ideas and designs into clean, scalable, and high-performing applications. I focus on usability, performance, and creating seamless interactions that feel natural across all devices.
@@ -266,7 +266,7 @@ function About() {
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="inline-block bg-slate-900 text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg relative overflow-hidden group"
+                                className="inline-block bg-slate-900 text-slate-900 dark:text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg relative overflow-hidden group"
                             >
                                 <span className="relative z-10">Download CV</span>
                                 <div className="absolute inset-0 bg-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 z-0"></div>
@@ -275,7 +275,7 @@ function About() {
                             <motion.button 
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="bg-slate-900 text-white px-8 py-3 rounded-lg font-bold transition shadow-lg opacity-50 cursor-not-allowed"
+                                className="bg-slate-900 text-slate-900 dark:text-white px-8 py-3 rounded-lg font-bold transition shadow-lg opacity-50 cursor-not-allowed"
                             >
                                 <span className="relative z-10">CV Not Available</span>
                             </motion.button>
@@ -296,7 +296,7 @@ function About() {
                     transition={HERO_PORTRAIT_TRANSITION}
                     className="relative perspective-1000"
                 >
-                     <div className="relative z-10 transform-style-3d bg-white dark:bg-white/10 p-4 pb-0 rounded-2xl shadow-2xl rotate-3 border border-slate-100 dark:border-white/10">
+                     <div className="relative z-10 transform-style-3d bg-white dark:bg-transparent p-4 pb-0 rounded-2xl shadow-2xl rotate-3 border border-slate-100 dark:border-slate-200 dark:border-white/10">
                         <img 
                             src={meImage} 
                             alt="Portrait" 
@@ -328,10 +328,10 @@ function About() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {education.map((item) => (
-                        <div key={item.title} className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/10 p-6 shadow-sm hover:shadow-lg transition-all duration-300">
+                        <div key={item.title} className="rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-white/10 bg-white dark:bg-transparent p-6 shadow-sm hover:shadow-lg transition-all duration-300">
                             <p className="text-sm font-bold text-yellow-500 mb-3">{item.year}</p>
                             <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
-                            <p className="text-slate-600 dark:text-slate-300">{item.school}</p>
+                            <p className="text-slate-700 dark:text-slate-300">{item.school}</p>
                         </div>
                     ))}
                 </div>
@@ -346,7 +346,7 @@ function About() {
             <div className="max-w-4xl mx-auto relative z-10">
                 <h2 className="text-4xl font-serif font-bold text-slate-900 dark:text-white mb-16 text-center">Professional Experience</h2>
                 
-                <div className="relative border-l-2 border-slate-200 dark:border-white/10 ml-4 md:ml-0 space-y-16">
+                <div className="relative border-l-2 border-slate-200 dark:border-slate-200 dark:border-white/10 ml-4 md:ml-0 space-y-16">
                     {/* Animated Line Follower (Optional Complex Feature - kept simple for now) */}
                     
                     {professionalExperience.map((item, index) => (
@@ -370,13 +370,13 @@ function About() {
                                 </div>
 
                                 {/* Content (Right on Desktop) */}
-                                <div className="md:col-span-8 bg-white dark:bg-white/10 p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-white/10 group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 relative">
+                                <div className="md:col-span-8 bg-white dark:bg-transparent p-8 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-200 dark:border-white/10 group-hover:shadow-xl group-hover:-translate-y-1 transition-all duration-300 relative">
                                     {/* Small arrow */}
-                                    <div className="hidden md:block absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-white/10 transform rotate-45 border-l border-b border-slate-100 dark:border-white/10"></div>
+                                    <div className="hidden md:block absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 bg-white dark:bg-transparent transform rotate-45 border-l border-b border-slate-100 dark:border-slate-200 dark:border-white/10"></div>
                                     
                                     <h3 className="text-xl font-bold text-slate-800 dark:text-white">{item.role}</h3>
                                     <h4 className="text-slate-500 dark:text-slate-400 text-sm mb-4 font-serif italic">{item.company}</h4>
-                                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{item.desc}</p>
+                                    <p className="text-slate-700 dark:text-slate-300 leading-relaxed">{item.desc}</p>
                                 </div>
                             </div>
                         </motion.div>
@@ -386,7 +386,7 @@ function About() {
         </section>
 
         {/* Music Experience */}
-        <section className="px-6 py-24 bg-slate-950 text-white relative overflow-hidden">
+        <section className="px-6 py-24 bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden">
             <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '18px 18px' }}></div>
 
             <div className="max-w-6xl mx-auto relative z-10">
@@ -397,7 +397,7 @@ function About() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {musicHighlights.map((section) => (
-                        <div key={section.title} className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                        <div key={section.title} className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-white/5 p-6 backdrop-blur-sm">
                             <h3 className="text-2xl font-bold text-yellow-300 mb-4">{section.title}</h3>
                             <ul className="space-y-3 text-slate-300 leading-7 list-disc pl-5">
                                 {section.items.map((item) => (
@@ -411,7 +411,7 @@ function About() {
         </section>
 
         {/* Brand Story */}
-        <section className="px-6 py-24 bg-white dark:bg-white/10 relative overflow-hidden">
+        <section className="px-6 py-24 bg-white dark:bg-transparent relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(250,204,21,0.08),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(168,85,247,0.08),transparent_30%)]"></div>
 
             <div className="max-w-6xl mx-auto relative z-10">
@@ -419,13 +419,13 @@ function About() {
                     <h2 className="text-4xl lg:text-5xl font-serif font-bold text-slate-900 dark:text-white leading-tight">
                         My brand combines art, structure, and emotional design.
                     </h2>
-                    <p className="mt-6 text-lg leading-8 text-slate-600 dark:text-slate-300">
+                    <p className="mt-6 text-lg leading-8 text-slate-700 dark:text-slate-300">
                         My story begins at the age of eleven, when music became a serious commitment. Over the years, music taught me discipline, emotional awareness, storytelling, and how to connect with people without saying a single word. When I moved into interactive media and coding, I recognized the same principles: rhythm, structure, timing, and emotion shape meaningful digital experiences.
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-slate-950 p-8 text-white shadow-[0_20px_60px_rgba(15,23,42,0.20)]">
+                    <div className="rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-white/10 bg-slate-950 p-8 text-slate-900 dark:text-white shadow-[0_20px_60px_rgba(15,23,42,0.20)]">
                         <p className="text-yellow-300 text-4xl lg:text-5xl font-serif font-extrabold mb-5">My Story</p>
                         <div className="space-y-4 text-slate-300 leading-8">
                             <p>For more than two decades, music was not just something I did — it was who I was. Through performance and composition, I learned how details matter and how rhythm, timing, and structure create impact.</p>
@@ -452,9 +452,9 @@ function About() {
                                 text: "I keep learning and refining both my creative and technical craft.",
                             },
                         ].map((item) => (
-                            <div key={item.title} className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/10 p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                            <div key={item.title} className="rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-white/10 bg-white dark:bg-transparent p-6 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.title}</h3>
-                                <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">{item.text}</p>
+                                <p className="text-sm leading-7 text-slate-700 dark:text-slate-300">{item.text}</p>
                             </div>
                         ))}
                     </div>
@@ -463,7 +463,7 @@ function About() {
         </section>
 
         {/* Philosophy */}
-        <section className="py-32 px-6 bg-slate-900 text-white text-center relative overflow-hidden">
+        <section className="py-32 px-6 bg-slate-900 text-slate-900 dark:text-white text-center relative overflow-hidden">
              {/* Dynamic background circles */}
              <motion.div 
                 animate={PHILOSOPHY_ORB.animate}

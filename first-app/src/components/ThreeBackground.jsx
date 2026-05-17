@@ -37,30 +37,80 @@ function ThreeBackground() {
     // HELPER: CREATE TEXTURE FROM TEXT
     const createTextTexture = (text, color) => {
       const canvas = document.createElement("canvas");
-      const size = 64; 
+      const size = 128; // Increased size for sharper rendering
       canvas.width = size;
       canvas.height = size;
 
       const ctx = canvas.getContext("2d");
       ctx.clearRect(0, 0, size, size); // Transparent background
 
-      ctx.font = "bold 40px Arial";
+      ctx.font = "bold 80px Arial"; // Larger font 
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
+      
+      // Add a slight shadow for depth and better visibility in both modes
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 4;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+
       ctx.fillStyle = color;
       ctx.fillText(text, size / 2, size / 2);
 
       const texture = new THREE.CanvasTexture(canvas);
+      texture.anisotropy = renderer.capabilities.getMaxAnisotropy(); // Better filtering
       texture.needsUpdate = true;
       return texture;
     };
 
-    // SYMBOLS & PARTICLES
+        // SYMBOLS & PARTICLES
     const symbols = ["♪", "♫", "♩", "♬", "</>", "{ }", ";", "//","𝄞","⚛","⁴⁰⁴","⋆.˚","𝄢"];
-    const symbolColors = ["#facc15", "#fbbf24", "#a855f7", "#6366f1"]; // Yellows & Indigos
+    
+    // Define both color palettes
+    const lightModeColors = ["#ea580c", "#d946ef", "#8b5cf6", "#3b82f6", "#10b981", "#ef4444"]; 
+    const darkModeColors = ["#facc15", "#fbbf24", "#a855f7", "#6366f1"]; // Original yellow & indigo
 
     const particlesGroup = new THREE.Group();
     const cleanupMeshes = [];
+    const materialsArray = [];
+
+    const isDarkMode = () => document.documentElement.classList.contains("dark");
+
+    const createMaterials = () => {
+      const modeColors = isDarkMode() ? darkModeColors : lightModeColors;
+      symbols.forEach((symbol, index) => {
+        const color = modeColors[index % modeColors.length];
+        const texture = createTextTexture(symbol, color);
+        
+        if (materialsArray[index]) {
+            materialsArray[index].map.dispose();
+            materialsArray[index].map = texture;
+            materialsArray[index].needsUpdate = true;
+        } else {
+            const particlesMaterial = new THREE.PointsMaterial({
+              size: 0.5,
+              map: texture,
+              transparent: true,
+              opacity: 1.0,
+              depthWrite: false,
+              blending: THREE.NormalBlending,
+            });
+            materialsArray.push(particlesMaterial);
+        }
+      });
+    };
+    
+    createMaterials();
+
+    // Watch for theme changes on HTML to dynamically switch colors
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class") {
+            createMaterials();
+        }
+      });
+    });
+    observer.observe(document.documentElement, { attributes: true });
 
     symbols.forEach((symbol, index) => {
       const particlesGeometry = new THREE.BufferGeometry();
@@ -76,18 +126,7 @@ function ThreeBackground() {
         new THREE.BufferAttribute(posArray, 3)
       );
 
-      const color = symbolColors[index % symbolColors.length];
-      const texture = createTextTexture(symbol, color);
-
-      const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.4,
-        map: texture,
-        transparent: true,
-        opacity: 0.9,
-        depthWrite: false,
-        blending: THREE.AdditiveBlending,
-      });
-
+      const particlesMaterial = materialsArray[index];
       const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
       
       // Random rotation
@@ -95,7 +134,7 @@ function ThreeBackground() {
       particlesMesh.rotation.y = Math.random() * Math.PI;
 
       particlesGroup.add(particlesMesh);
-      cleanupMeshes.push({ geometry: particlesGeometry, material: particlesMaterial, texture: texture });
+      cleanupMeshes.push({ geometry: particlesGeometry, material: particlesMaterial });
     });
 
     scene.add(particlesGroup);
@@ -158,11 +197,8 @@ function ThreeBackground() {
         mount.removeChild(renderer.domElement);
       }
       
-      cleanupMeshes.forEach(mesh => {
-        mesh.geometry.dispose();
-        mesh.material.dispose();
-        if (mesh.texture) mesh.texture.dispose();
-      });
+      cleanupMeshes.forEach(mesh => { mesh.geometry.dispose(); mesh.material.dispose(); if (mesh.material.map) mesh.material.map.dispose(); });
+      observer.disconnect();
       
       renderer.dispose();
       cancelAnimationFrame(animationId);

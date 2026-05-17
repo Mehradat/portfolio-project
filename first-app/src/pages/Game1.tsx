@@ -284,7 +284,7 @@ function Game1() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-900 text-white" onMouseMove={handleMouseMove}>
+        <div className="min-h-screen flex flex-col bg-transparent text-slate-900 dark:text-white transition-colors duration-500" onMouseMove={handleMouseMove}>
             <Header />
             
             <main className="flex-grow flex flex-col lg:flex-row items-center lg:items-start justify-center p-4 gap-8">
@@ -306,7 +306,7 @@ function Game1() {
                         {!gameStarted && (
                             <button 
                                 onClick={startGame}
-                                className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                                className="bg-green-500 hover:bg-green-600 dark:bg-green-600 text-white font-bold py-2 px-4 rounded"
                             >
                                 Start Game
                             </button>
@@ -314,7 +314,7 @@ function Game1() {
                     </div>
 
                     <div 
-                        className="grid gap-2 p-4 bg-gray-800 rounded-lg shadow-lg"
+                        className="grid gap-2 p-4 bg-white dark:bg-gray-800 shadow-md dark:shadow-none rounded-lg shadow-lg"
                         style={{ 
                             gridTemplateColumns: `repeat(${GRID_SIZE}, minmax(0, 1fr))` 
                         }}
@@ -325,10 +325,10 @@ function Game1() {
                                 id={`box-${index}`}
                                 onClick={() => handleBoxClick(index)}
                                 className={`
-                                    w-8 h-8 sm:w-10 sm:h-10 border border-gray-600 rounded cursor-pointer 
+                                    w-8 h-8 sm:w-10 sm:h-10 border border-gray-300 dark:border-gray-600 rounded cursor-pointer 
                                     transition-colors duration-200
-                                    ${gameStarted && !gameOver ? 'hover:bg-gray-700' : ''}
-                                    ${gameOver && index === targetBox ? 'bg-yellow-400 animate-pulse' : 'bg-gray-700'}
+                                    ${gameStarted && !gameOver ? 'hover:bg-gray-200 dark:hover:bg-gray-600' : ''}
+                                    ${gameOver && index === targetBox ? 'bg-yellow-400 animate-pulse' : 'bg-gray-100 dark:bg-gray-700'}
                                 `}
                             >
                                 {/* Content Hidden */}
@@ -338,7 +338,7 @@ function Game1() {
                     
                     {gameStarted && !gameOver && (
                         <div className="mt-4 w-full">
-                            <div className="w-full bg-gray-700 rounded-full h-4 mb-2 overflow-hidden border border-gray-600">
+                            <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-4 mb-2 overflow-hidden border border-gray-300 dark:border-gray-600">
                                 <div 
                                     className={`h-full transition-all duration-1000 ease-linear ${timeLeft < 10 ? 'bg-red-500 animate-pulse' : 'bg-green-500'}`}
                                     style={{ width: `${(timeLeft / 60) * 100}%` }}
@@ -356,26 +356,26 @@ function Game1() {
                 </div>
 
                 {/* Scoreboard Area */}
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-sm">
-                    <h2 className="text-2xl font-bold mb-4 text-center border-b border-gray-600 pb-2">Score History</h2>
+                <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-none p-6 rounded-lg shadow-lg w-full max-w-sm">
+                    <h2 className="text-2xl font-bold mb-4 text-center border-b border-gray-300 dark:border-gray-600 pb-2">Score History</h2>
                     <div className="space-y-3">
                         {scoreHistory.length === 0 ? (
-                            <p className="text-gray-400 text-center">No games played yet.</p>
+                            <p className="text-gray-600 dark:text-gray-400 text-center">No games played yet.</p>
                         ) : (
                             scoreHistory.map((entry, index) => (
                                 <div 
                                     key={index} 
-                                    className="flex justify-between items-center p-3 bg-gray-700/50 rounded hover:bg-gray-700 transition-colors"
+                                    className="flex justify-between items-center p-3 bg-gray-100 dark:bg-gray-700/50 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
                                 >
                                     <div className="flex flex-col">
                                         <span className={`font-bold ${entry.score > 0 ? 'text-green-400' : 'text-red-400'}`}>
                                             {entry.score > 0 ? 'WIN' : 'LOSS'}
                                         </span>
-                                        <span className="text-xs text-gray-400">{entry.date}</span>
+                                        <span className="text-xs text-gray-600 dark:text-gray-400">{entry.date}</span>
                                     </div>
                                     <div className="flex flex-col items-end">
                                         <span className="font-mono font-bold text-yellow-400">{entry.score} pts</span>
-                                        <span className="text-xs text-gray-400">{entry.time}</span>
+                                        <span className="text-xs text-gray-600 dark:text-gray-400">{entry.time}</span>
                                     </div>
                                 </div>
                             ))
@@ -387,7 +387,7 @@ function Game1() {
                                 localStorage.removeItem('drumGameScores');
                                 setScoreHistory([]);
                             }}
-                            className="mt-4 w-full text-sm text-gray-400 hover:text-white underline"
+                            className="mt-4 w-full text-sm text-gray-600 dark:text-gray-400 hover:text-slate-900 dark:text-white underline"
                         >
                             Clear History
                         </button>
@@ -397,20 +397,20 @@ function Game1() {
                 {/* Game Over Modal */}
                 {gameOver && (
                     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-                        <div className="bg-gray-800 p-8 rounded-xl border border-gray-600 shadow-2xl text-center max-w-md w-full animate-fade-in">
+                        <div className="bg-white dark:bg-gray-800 shadow-md dark:shadow-none p-8 rounded-xl border border-gray-300 dark:border-gray-600 shadow-2xl text-center max-w-md w-full animate-fade-in">
                             <h2 className="text-4xl font-bold mb-4">{attemptsLeft > 0 ? "You Won!" : "Game Over"}</h2>
                             <div className="text-7xl mb-6">{attemptsLeft > 0 ? "🏆" : "☠️"}</div>
                             
-                            <div className="space-y-4 text-xl mb-8 bg-gray-700/50 p-6 rounded-lg">
+                            <div className="space-y-4 text-xl mb-8 bg-gray-100 dark:bg-gray-700/50 p-6 rounded-lg">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-400">Time Taken:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">Time Taken:</span>
                                     <span className="font-mono">{finalTime.toFixed(1)}s</span>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <span className="text-gray-400">Attempts Left:</span>
+                                    <span className="text-gray-600 dark:text-gray-400">Attempts Left:</span>
                                     <span className="font-mono text-green-400">{attemptsLeft}</span>
                                 </div>
-                                <div className="border-t border-gray-600 my-2"></div>
+                                <div className="border-t border-gray-300 dark:border-gray-600 my-2"></div>
                                 <div className="flex justify-between items-center text-2xl font-bold text-yellow-400">
                                     <span>Total Score:</span>
                                     <span>{score}</span>
