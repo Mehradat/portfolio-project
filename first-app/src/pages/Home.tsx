@@ -34,7 +34,7 @@ const RevealOnScroll = ({ children, className = "", delay = 0 }: { children: Rea
 
 function Home() {
     return (
-        <div className="text-white min-h-screen overflow-x-hidden">
+        <div className="text-slate-900 dark:text-slate-900 dark:text-white min-h-screen transition-colors duration-500 overflow-x-hidden">
       
       {/* Header outside of Hero Container to prevent z-index issues */}
       <div className="relative z-[200]">
@@ -48,10 +48,10 @@ function Home() {
             <main className="font-serif px-4 sm:px-6 lg:px-10 pt-8 sm:pt-16 lg:pt-16 lg:pb-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12 min-h-[70vh] lg:min-h-137.5">
               <div className="w-full space-y-5 sm:space-y-6 lg:pl-16 xl:pl-24 max-w-2xl order-2 lg:order-1">
                 <RevealOnScroll>
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif leading-tight text-white max-w-xl">
+                    <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif leading-tight text-slate-900 dark:text-white max-w-xl">
                     Hello, my name is <br /> Mehrad Ata
                     </h2>
-                    <p className="text-sm sm:text-base lg:text-lg text-slate-300 max-w-lg mt-5 sm:mt-6 leading-relaxed">
+                    <p className="text-sm sm:text-base lg:text-lg text-slate-600 dark:text-slate-300 max-w-lg mt-5 sm:mt-6 leading-relaxed">
                     Full-stack web developer focused on building responsive, user-centered digital experiences. I work across front-end and back-end development, transforming design concepts into clean, scalable, and functional code.
 
 With a strong foundation in modern web technologies and a passion for usability and performance, I aim to create seamless experiences across all devices and platforms.
@@ -67,7 +67,7 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                     </a>
                     <a
                       href="/contact"
-                      className="inline-flex justify-center items-center border-2 border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition"
+                      className="inline-flex justify-center items-center border-2 border-slate-400 dark:border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-slate-200 dark:bg-white/10 transition"
                     >
                         Contact
                     </a>
@@ -93,14 +93,14 @@ Alongside my technical work, I bring over 20 years of experience in music, which
         </div>
       </div>
       {/* Values Section */}
-      <section className="px-4 sm:px-6 lg:px-10 py-16 sm:py-20 bg-slate-900/50 backdrop-blur-md">
+      <section className="px-4 sm:px-6 lg:px-10 py-16 sm:py-20 bg-slate-100 dark:bg-slate-900/50 backdrop-blur-md">
         <RevealOnScroll>
             <div className="text-center mb-16">
-            <h3 className="text-3xl sm:text-4xl font-bold font-serif mb-4 relative inline-block text-white max-w-3xl">
+            <h3 className="text-3xl sm:text-4xl font-bold font-serif mb-4 relative inline-block text-slate-900 dark:text-white max-w-3xl">
                 Not Just a Musician. Not Just a Developer.
                 <span className="absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-24 h-1 bg-yellow-400"></span>
             </h3>
-            <p className="text-slate-300 mt-4 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-2">
+            <p className="text-slate-600 dark:text-slate-300 mt-4 max-w-2xl mx-auto text-sm sm:text-base leading-relaxed px-2">
               Creativity, authenticity, adaptability, and continuous growth guide both my music and my technology work.
             </p>
             </div>
@@ -131,8 +131,8 @@ Alongside my technical work, I bring over 20 years of experience in music, which
               <div className="w-12 h-12 bg-yellow-400/20 flex items-center justify-center rounded-lg mb-5 sm:mb-6 transition-all duration-300 group-hover:bg-yellow-400 group-hover:scale-110 group-hover:rotate-3">
                     <img src={item.icon} alt={item.title} className="w-6 h-6 object-contain invert" />
                 </div>
-              <h4 className="text-lg sm:text-xl font-bold mb-3 text-white group-hover:text-yellow-400 transition-colors">{item.title}</h4>
-              <p className="text-slate-300 text-sm leading-relaxed max-w-md">
+              <h4 className="text-lg sm:text-xl font-bold mb-3 text-slate-900 dark:text-white group-hover:text-yellow-400 transition-colors">{item.title}</h4>
+              <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed max-w-md">
                     {item.desc}
                 </p>
                 </div>
@@ -142,11 +142,11 @@ Alongside my technical work, I bring over 20 years of experience in music, which
       </section>
 
       {/* Stats Section */}
-      <section className="bg-slate-950/80 text-white py-14 sm:py-16 px-4 sm:px-6 lg:px-10 border-y border-white/5">
+      <section className="bg-slate-200 dark:bg-slate-950/80 text-slate-900 dark:text-white py-14 sm:py-16 px-4 sm:px-6 lg:px-10 border-y border-slate-200 dark:border-white/5">
         <RevealOnScroll>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-center divide-x divide-slate-800">
             {[
-                { number: "20+", label: "Years in Music", color: "text-white" },
+                { number: "20+", label: "Years in Music", color: "text-slate-900 dark:text-white" },
                 { number: "7", label: "Licensed Tracks", color: "text-amber-400" },
                 { number: "5+", label: "Dev Projects", color: "text-yellow-400" },
                 { number: "∞", label: "Creative Possibilities", color: "text-yellow-400" },
@@ -155,7 +155,7 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                 <span className={`text-3xl sm:text-4xl font-bold mb-2 ${stat.color}`}>
                     {stat.number}
                 </span>
-                <span className="text-slate-400 text-[11px] sm:text-sm leading-snug">{stat.label}</span>
+                <span className="text-slate-500 dark:text-slate-400 text-[11px] sm:text-sm leading-snug">{stat.label}</span>
                 </div>
             ))}
             </div>
@@ -163,14 +163,14 @@ Alongside my technical work, I bring over 20 years of experience in music, which
       </section>
 
       {/* Featured Work */}
-        <section className="px-4 sm:px-6 lg:px-10 py-16 sm:py-20 bg-slate-900/50 backdrop-blur-md">
+        <section className="px-4 sm:px-6 lg:px-10 py-16 sm:py-20 bg-slate-100 dark:bg-slate-900/50 backdrop-blur-md">
         <RevealOnScroll>
             <div className="text-center mb-16">
-          <h3 className="text-3xl sm:text-4xl font-bold font-serif mb-4 relative inline-block text-white">
+          <h3 className="text-3xl sm:text-4xl font-bold font-serif mb-4 relative inline-block text-slate-900 dark:text-white">
                 Featured Work
                 <span className="absolute left-1/2 -translate-x-1/2 -bottom-2.5 w-24 h-1 bg-yellow-400"></span>
             </h3>
-          <p className="text-slate-300 mt-4 text-sm sm:text-base leading-relaxed px-2">
+          <p className="text-slate-600 dark:text-slate-300 mt-4 text-sm sm:text-base leading-relaxed px-2">
                 Where emotional design meets technical execution
             </p>
             </div>
@@ -197,10 +197,10 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                 <span className="bg-amber-400/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30">
                     React + Tone.js
                 </span>
-                <h4 className="text-lg sm:text-xl font-bold mt-4 mb-2 group-hover:text-amber-400 transition-colors text-white">
+                <h4 className="text-lg sm:text-xl font-bold mt-4 mb-2 group-hover:text-amber-400 transition-colors text-slate-900 dark:text-white">
                     Interactive Audio Sequencer
                 </h4>
-                <p className="text-slate-300 text-sm leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                     A browser-based step sequencer and virtual piano keyboard allowing users to compose, play, and experiment with generative beats in real-time.
                 </p>
                 </div>
@@ -223,10 +223,10 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                 <span className="bg-indigo-400/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full border border-indigo-400/30">
                     Web Audio API + React
                 </span>
-                <h4 className="text-lg sm:text-xl font-bold mt-4 mb-2 group-hover:text-indigo-400 transition-colors text-white">
+                <h4 className="text-lg sm:text-xl font-bold mt-4 mb-2 group-hover:text-indigo-400 transition-colors text-slate-900 dark:text-white">
                     Rhythmic Reflex Game
                 </h4>
-                <p className="text-slate-300 text-sm leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
                     An engaging tile-based reflex game combining spatial awareness, speed, and dynamically generated audio feedback.
                 </p>
                 </div>
@@ -238,7 +238,7 @@ Alongside my technical work, I bring over 20 years of experience in music, which
             <RevealOnScroll>
                 <a
                   href="/projects"
-                  className="inline-block border-2 border-white/20 text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition"
+                  className="inline-block border-2 border-slate-300 dark:border-white/20 text-white px-8 py-3 rounded-lg font-medium hover:bg-slate-200 dark:bg-white/10 transition"
                 >
                     View All Projects
                 </a>
@@ -247,12 +247,12 @@ Alongside my technical work, I bring over 20 years of experience in music, which
       </section>
 
       {/* CTA Section */}
-      <section className="bg-slate-950/80 text-white py-20 sm:py-24 text-center px-4 sm:px-6 lg:px-10 border-t border-white/5">
+      <section className="bg-slate-200 dark:bg-slate-950/80 text-slate-900 dark:text-white py-20 sm:py-24 text-center px-4 sm:px-6 lg:px-10 border-t border-slate-200 dark:border-white/5">
         <RevealOnScroll>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-6 px-2">
             Let's Create Something Meaningful
             </h2>
-            <p className="text-slate-400 max-w-2xl mx-auto mb-10 text-sm sm:text-base leading-relaxed px-2">
+            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-sm sm:text-base leading-relaxed px-2">
             Looking for someone who understands both emotional storytelling and
             technical execution?
             </p>

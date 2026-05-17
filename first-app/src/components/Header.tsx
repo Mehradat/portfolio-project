@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import logoWhite from "../assets/logo-white.png";
 import logoBlack from "../assets/logo-black.png";
 import { API_URL } from "../config";
+import ThemeToggle from "./ThemeToggle";
 
 function Header({ className = "text-white" }: { className?: string }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -84,27 +85,35 @@ function Header({ className = "text-white" }: { className?: string }) {
           <img 
             src={className.includes("text-slate-9") || className.includes("text-black") ? logoBlack : logoWhite} 
             alt="Logo" 
-            className="h-10 sm:h-14 w-auto object-contain bg-transparent" 
+            className="h-10 sm:h-14 w-auto object-contain bg-transparent dark:hidden" 
+          />
+          <img 
+            src={logoWhite} 
+            alt="Logo" 
+            className="h-10 sm:h-14 w-auto object-contain bg-transparent hidden dark:block" 
           />
         </button>
 
-        <button
-          type="button"
-          className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-current bg-transparent opacity-80 transition hover:opacity-100"
-          onClick={() => {
-            setIsMenuOpen((value) => !value);
-            setMenuSpinKey((value) => value + 1);
-          }}
-          aria-label="Toggle navigation menu"
-          aria-expanded={isMenuOpen}
-        >
-          <span className="sr-only">Toggle navigation</span>
-          <span key={menuSpinKey} className="flex flex-col gap-1.5 animate-[spin_700ms_ease-in-out]">
-            <span className="block h-0.5 w-5 rounded-full bg-current" />
-            <span className="block h-0.5 w-5 rounded-full bg-current" />
-            <span className="block h-0.5 w-5 rounded-full bg-current" />
-          </span>
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-current bg-transparent opacity-80 transition hover:opacity-100"
+            onClick={() => {
+              setIsMenuOpen((value) => !value);
+              setMenuSpinKey((value) => value + 1);
+            }}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isMenuOpen}
+          >
+            <span className="sr-only">Toggle navigation</span>
+            <span key={menuSpinKey} className="flex flex-col gap-1.5 animate-[spin_700ms_ease-in-out]">
+              <span className="block h-0.5 w-5 rounded-full bg-current" />
+              <span className="block h-0.5 w-5 rounded-full bg-current" />
+              <span className="block h-0.5 w-5 rounded-full bg-current" />
+            </span>
+          </button>
+        </div>
 
         <nav
           className={`absolute left-0 top-full z-50 w-full px-4 pt-3 md:static md:w-auto md:px-0 md:pt-0 md:pointer-events-auto ${isMenuOpen ? "pointer-events-auto opacity-100 translate-y-0 scale-100 max-h-[80vh]" : "pointer-events-none opacity-0 -translate-y-4 scale-95 max-h-0 md:opacity-100 md:translate-y-0 md:scale-100 md:max-h-none"} transform origin-top transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:transition-none`}
@@ -184,6 +193,9 @@ function Header({ className = "text-white" }: { className?: string }) {
                   </li>
                 </>
               )}
+              <li className="hidden md:flex items-center ml-2 border-l border-white/20 pl-6 h-6">
+                <ThemeToggle />
+              </li>
             </ul>
           </div>
         </nav>

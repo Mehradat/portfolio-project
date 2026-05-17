@@ -159,13 +159,13 @@ function Projects() {
   };
 
   return (
-    <div className="min-h-screen font-sans text-white">
-      <Header />
+    <div className="min-h-screen bg-white dark:bg-white/10 font-sans text-slate-800 dark:text-white">
+      <Header className="text-slate-900 dark:text-white" />
 
       <main className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-7xl font-serif font-extrabold text-white mb-6 tracking-tight">
+          <h1 className="text-6xl md:text-7xl font-serif font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
             Projects
           </h1>
         </div>
@@ -179,7 +179,7 @@ function Projects() {
               className={`px-6 py-3 rounded-lg border-2 ${
                 activeCategory === cat
                   ? "bg-yellow-400 text-black"
-                  : "bg-white/10 text-slate-400"
+                  : "bg-white dark:bg-white/10 text-gray-500 dark:text-slate-400"
               }`}
             >
               {cat}
@@ -201,7 +201,7 @@ function Projects() {
                   return (
                     <>
                       <div 
-                        className="group relative rounded-xl overflow-hidden border border-white/20/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-400/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-800/40"
+                        className="group relative rounded-xl overflow-hidden border border-slate-300 dark:border-white/20/90 shadow-[0_14px_35px_rgba(15,23,42,0.22)] hover:border-yellow-400/80 hover:shadow-[0_18px_45px_rgba(234,179,8,0.24)] transition-all duration-300 aspect-[16/10] bg-slate-100 dark:bg-slate-800/50"
                         onTouchStart={handleTouchStart}
                         onTouchMove={handleTouchMove}
                         onTouchEnd={() => handleTouchEndProject(project._id, images.length)}
@@ -255,7 +255,7 @@ function Projects() {
                                     setProjectImageIndex(project._id, idx);
                                   }}
                                   className={`h-2.5 rounded-full transition-all ${
-                                    idx === safeIndex ? "w-6 bg-yellow-400" : "w-2.5 bg-white/60 hover:bg-white/10"
+                                    idx === safeIndex ? "w-6 bg-yellow-400" : "w-2.5 bg-white/60 hover:bg-white dark:bg-white/10"
                                   }`}
                                   aria-label={`Go to image ${idx + 1}`}
                                 />
@@ -275,13 +275,13 @@ function Projects() {
                   {project.title}
                 </h2>
 
-                <p className="text-slate-300 mb-4">
+                <p className="text-gray-600 dark:text-slate-300 mb-4">
                   {project.description}
                 </p>
 
                 <div className="mb-4">
                   <strong>Features:</strong>
-                  <ul className="list-disc ml-5 text-slate-300">
+                  <ul className="list-disc ml-5">
                     {project.keyFeatures.map((f, i) => (
                       <li key={i}>{f}</li>
                     ))}
@@ -294,7 +294,7 @@ function Projects() {
                     {project.techStack.map((t) => (
                       <span
                         key={t}
-                        className="bg-white/20 px-3 py-1 rounded text-white"
+                        className="bg-gray-200 dark:bg-white/20 px-3 py-1 rounded"
                       >
                         {t}
                       </span>

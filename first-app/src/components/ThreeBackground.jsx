@@ -172,7 +172,7 @@ function ThreeBackground() {
   return (
     <div
       ref={mountRef}
-      className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-slate-950"
+      className="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden bg-slate-50 dark:bg-slate-950 transition-colors duration-500"
     />
   );
 };
