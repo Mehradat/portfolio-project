@@ -266,7 +266,7 @@ function About() {
                                 rel="noopener noreferrer"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="inline-block bg-slate-900 text-slate-900 dark:text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg relative overflow-hidden group"
+                                className="inline-block bg-slate-900 text-white dark:text-white px-8 py-3 rounded-lg font-bold hover:bg-slate-800 transition shadow-lg relative overflow-hidden group"
                             >
                                 <span className="relative z-10">Download CV</span>
                                 <div className="absolute inset-0 bg-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 z-0"></div>
@@ -275,7 +275,7 @@ function About() {
                             <motion.button 
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="bg-slate-900 text-slate-900 dark:text-white px-8 py-3 rounded-lg font-bold transition shadow-lg opacity-50 cursor-not-allowed"
+                                className="bg-slate-900 text-white dark:text-white px-8 py-3 rounded-lg font-bold transition shadow-lg opacity-50 cursor-not-allowed"
                             >
                                 <span className="relative z-10">CV Not Available</span>
                             </motion.button>
@@ -319,7 +319,7 @@ function About() {
         </section>
 
         {/* Education */}
-        <section className="px-6 py-24 bg-slate-50 dark:bg-slate-900/50">
+        <section className="px-6 py-24 bg-white/90 dark:bg-slate-900/50 backdrop-blur-sm border-y border-slate-200 dark:border-white/5">
             <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
                     <p className="text-yellow-500 uppercase tracking-[0.3em] text-xs font-bold mb-3">Education</p>
@@ -339,7 +339,7 @@ function About() {
         </section>
 
         {/* Professional Experience */}
-        <section className="py-24 px-6 bg-slate-50 dark:bg-slate-900/50 relative overflow-hidden">
+        <section className="py-24 px-6 bg-slate-50/90 dark:bg-slate-900/50 relative overflow-hidden backdrop-blur-sm border-b border-slate-200 dark:border-white/5">
             {/* Background pattern */}
             <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#444 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
@@ -386,7 +386,7 @@ function About() {
         </section>
 
         {/* Music Experience */}
-        <section className="px-6 py-24 bg-slate-950 text-slate-900 dark:text-white relative overflow-hidden">
+        <section className="px-6 py-24 bg-slate-900 text-white dark:text-white relative overflow-hidden border-b border-slate-200 dark:border-white/5">
             <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '18px 18px' }}></div>
 
             <div className="max-w-6xl mx-auto relative z-10">
@@ -397,9 +397,9 @@ function About() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {musicHighlights.map((section) => (
-                        <div key={section.title} className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-white/5 p-6 backdrop-blur-sm">
+                        <div key={section.title} className="rounded-3xl border border-slate-700/50 dark:border-white/10 bg-slate-800/80 dark:bg-white/5 p-6 backdrop-blur-md shadow-xl">
                             <h3 className="text-2xl font-bold text-yellow-300 mb-4">{section.title}</h3>
-                            <ul className="space-y-3 text-slate-300 leading-7 list-disc pl-5">
+                            <ul className="space-y-3 text-slate-200 leading-7 list-disc pl-5">
                                 {section.items.map((item) => (
                                     <li key={item}>{item}</li>
                                 ))}
@@ -425,9 +425,9 @@ function About() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div className="rounded-3xl border border-slate-200 dark:border-slate-200 dark:border-white/10 bg-slate-950 p-8 text-slate-900 dark:text-white shadow-[0_20px_60px_rgba(15,23,42,0.20)]">
+                    <div className="rounded-3xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-slate-950 p-8 text-slate-900 dark:text-white shadow-xl backdrop-blur-md">
                         <p className="text-yellow-300 text-4xl lg:text-5xl font-serif font-extrabold mb-5">My Story</p>
-                        <div className="space-y-4 text-slate-300 leading-8">
+                        <div className="space-y-4 text-slate-700 dark:text-slate-300 leading-8">
                             <p>For more than two decades, music was not just something I did — it was who I was. Through performance and composition, I learned how details matter and how rhythm, timing, and structure create impact.</p>
                             <p>That creative foundation led me into Interactive Media Management and coding. Today, I design with empathy, build with structure, and create with intention so digital experiences feel both functional and emotionally resonant.</p>
                         </div>

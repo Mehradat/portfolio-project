@@ -190,8 +190,8 @@ function Projects() {
         {/* Projects */}
         <div className="space-y-16">
           {filteredProjects.map((project) => (
-            <div key={project._id} className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-              <div>
+            <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+              <div className="w-full lg:w-7/12">
                 {(() => {
                   const images = getProjectImages(project);
                   const currentIndex = projectSlideIndex[project._id] ?? 0;
@@ -209,7 +209,7 @@ function Projects() {
                         <img
                           src={currentImage}
                           alt={project.title}
-                          className="cursor-pointer w-full h-full object-contain object-top"
+                          className="cursor-pointer w-full h-full object-cover object-top"
                           onClick={() => openLightbox(project, safeIndex)}
                         />
 
@@ -270,18 +270,18 @@ function Projects() {
                 })()}
               </div>
 
-              <div>
-                <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
+              <div className="w-full lg:w-5/12 bg-white/70 dark:bg-slate-900/40 p-6 md:p-8 rounded-2xl backdrop-blur-md shadow-lg border border-white/50 dark:border-white/10">
+                  <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
                   {project.title}
                 </h2>
 
-                <p className="text-gray-600 dark:text-slate-300 mb-4">
+                <p className="text-slate-800 dark:text-slate-300 mb-6 leading-relaxed">
                   {project.description}
                 </p>
 
                 <div className="mb-4">
-                  <strong>Features:</strong>
-                  <ul className="list-disc ml-5">
+                  <strong className="text-slate-900 dark:text-white text-lg inline-block mb-3">Features:</strong>
+                  <ul className="list-disc ml-5 space-y-1 text-slate-700 dark:text-slate-300 mb-6">
                     {project.keyFeatures.map((f, i) => (
                       <li key={i}>{f}</li>
                     ))}
@@ -289,12 +289,12 @@ function Projects() {
                 </div>
 
                 <div>
-                  <strong>Tech:</strong>
+                  <strong className="text-slate-900 dark:text-white text-lg inline-block mb-2">Tech:</strong>
                   <div className="flex gap-2 flex-wrap mt-2">
                     {project.techStack.map((t) => (
                       <span
                         key={t}
-                        className="bg-gray-200 dark:bg-slate-800 dark:bg-white/20 px-3 py-1 rounded"
+                        className="bg-white dark:bg-slate-800/80 px-4 py-1.5 rounded-lg border border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-200 shadow-sm font-medium text-sm"
                       >
                         {t}
                       </span>
