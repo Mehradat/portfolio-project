@@ -48,6 +48,8 @@ function Home() {
             <main className="font-serif px-4 sm:px-6 lg:px-10 pt-8 sm:pt-16 lg:pt-16 lg:pb-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-12 min-h-[70vh] lg:min-h-137.5">
               <div className="w-full space-y-5 sm:space-y-6 lg:pl-16 xl:pl-24 max-w-2xl order-2 lg:order-1">
                 <RevealOnScroll>
+                  <div className="relative group bg-gradient-to-br from-white/80 via-white/50 to-white/30 dark:from-white/10 dark:via-white/5 dark:to-transparent p-6 sm:p-10 -mx-6 sm:mx-0 rounded-3xl backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] border border-white/60 dark:border-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_16px_48px_rgba(0,0,0,0.6)] hover:border-white/90 dark:hover:border-white/20">
+                    <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/40 to-transparent dark:from-white/10 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                     <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif leading-tight text-slate-900 dark:text-white max-w-xl">
                     Hello, my name is <br /> <span className="text-yellow-500 dark:text-yellow-400">Mehrad Ata</span>
                     </h2>
@@ -72,6 +74,7 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                         Contact
                     </a>
                     </div>
+                  </div>
                 </RevealOnScroll>
               </div>
 
@@ -80,12 +83,12 @@ Alongside my technical work, I bring over 20 years of experience in music, which
                   <img
                     src={bgImage}
                     alt="Decorative background"
-                    className="absolute inset-0 h-full w-full object-contain object-center blur-md opacity-60 saturate-[3] brightness-[0.6] pointer-events-none"
+                    className="absolute inset-0 h-full w-full object-contain object-center blur-2xl opacity-20 dark:opacity-60 saturate-[2] dark:saturate-[3] brightness-[1.1] dark:brightness-[0.6] pointer-events-none mix-blend-multiply dark:mix-blend-normal"
                   />
                   <img
                     src={meImage}
                     alt="Me"
-                    className="relative z-10 w-full h-auto object-contain drop-shadow-2xl pointer-events-auto transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-4 hover:brightness-125 hover:drop-shadow-[0_20px_50px_rgba(250,204,21,0.5)]"
+                    className="relative z-10 w-full h-auto object-contain drop-shadow-xl dark:drop-shadow-[0_25px_40px_rgba(0,0,0,0.5)] pointer-events-auto transition-all duration-500 ease-out hover:scale-105 hover:-translate-y-4 hover:brightness-105 dark:hover:brightness-125 hover:drop-shadow-[0_20px_50px_rgba(250,204,21,0.3)] dark:hover:drop-shadow-[0_20px_50px_rgba(250,204,21,0.5)]"
                   />
                 </div>
               </div>
@@ -247,12 +250,14 @@ Alongside my technical work, I bring over 20 years of experience in music, which
       </section>
 
       {/* CTA Section */}
-      <section className="bg-slate-200 dark:bg-slate-950/80 text-slate-900 dark:text-white py-20 sm:py-24 text-center px-4 sm:px-6 lg:px-10 border-t border-slate-200 dark:border-slate-200 dark:border-white/5">
+      <section className="relative overflow-hidden bg-gradient-to-br from-yellow-50/40 via-white/60 to-amber-50/40 dark:from-slate-900/80 dark:via-slate-950/80 dark:to-slate-950/95 backdrop-blur-xl text-slate-900 dark:text-white py-24 sm:py-32 text-center px-4 sm:px-6 lg:px-10 border-t border-white/60 dark:border-white/5 shadow-[0_-20px_40px_rgba(0,0,0,0.02)] dark:shadow-none">
+        {/* Subtle light mode decorative blobs */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-gradient-to-b from-yellow-100/20 to-transparent blur-3xl -z-10 dark:hidden"></div>
         <RevealOnScroll>
             <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-6 px-2">
             Let's Create Something Meaningful
             </h2>
-            <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-sm sm:text-base leading-relaxed px-2">
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10 text-sm sm:text-base leading-relaxed px-2">
             Looking for someone who understands both emotional storytelling and
             technical execution?
             </p>
