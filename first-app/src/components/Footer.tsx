@@ -2,7 +2,7 @@ import logoWhite from "../assets/logo-white.png";
 
 function Footer() {
   return (
-    <footer className="bg-slate-950 text-slate-300 mt-24 border-t border-slate-900">
+    <footer className="bg-slate-100 dark:bg-slate-950 text-slate-300 mt-24 border-t border-slate-900">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8 lg:gap-12">
           
@@ -86,7 +86,7 @@ function Footer() {
 
           {/* Quick Links */}
           <div className="md:col-span-6 lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">Quick Links</h4>
+            <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Quick Links</h4>
             <ul className="space-y-4 text-sm font-medium">
               <li><a href="/" className="hover:text-yellow-400 transition-colors">Home</a></li>
               <li><a href="/projects" className="hover:text-yellow-400 transition-colors">Projects</a></li>
@@ -98,7 +98,7 @@ function Footer() {
 
           {/* Contact Info */}
           <div className="md:col-span-6 lg:col-span-3 flex flex-col items-center md:items-start text-center md:text-left">
-            <h4 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">Get in Touch</h4>
+            <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-6 uppercase tracking-wider">Get in Touch</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <span className="block text-slate-500 mb-1 pointer-events-none uppercase text-xs font-bold tracking-widest">Email</span>

@@ -194,40 +194,40 @@ function Music() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-800">
-      {/* Header with dark text since the background is white */}
-      <Header className="text-slate-900" />
+    <div className="min-h-screen font-sans text-white">
+      {/* Header */}
+      <Header />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
         
         {/* Page Title */}
         <div className="text-center mb-16">
-          <h1 className="text-6xl font-serif font-bold text-slate-900 mb-6 relative inline-block">
+          <h1 className="text-6xl font-serif font-bold text-white mb-6 relative inline-block">
             Music
             <span className="absolute left-1/2 -translate-x-1/2 bottom-[-10px] w-24 h-1 bg-yellow-400"></span>
           </h1>
-          <p className="text-xl text-slate-500 mt-4">Original compositions where melody meets technology</p>
+          <p className="text-xl text-slate-400 mt-4">Original compositions where melody meets technology</p>
         </div>
 
         {/* Player Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Main Player Card */}
-          <div className="lg:col-span-2 bg-white rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 lg:p-12 border border-slate-100 relative overflow-hidden">
+          <div className="lg:col-span-2 bg-white/10 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 lg:p-12 border border-white/10 relative overflow-hidden">
             
             {/* Track Info */}
             <div className="mb-8 relative z-10">
-              <h2 className="text-4xl font-serif font-bold text-slate-900 mb-4">{currentTrack.title}</h2>
+              <h2 className="text-4xl font-serif font-bold text-white mb-4">{currentTrack.title}</h2>
               <div className="flex items-center gap-4">
                 <span className="bg-yellow-100 text-yellow-800 px-4 py-1 rounded-full text-sm font-medium">
                   {currentTrack.genre}
                 </span>
-                <span className="text-slate-500 font-medium">{formatTime(effectiveDuration)}</span>
+                <span className="text-slate-400 font-medium">{formatTime(effectiveDuration)}</span>
               </div>
             </div>
             {/* Visualizer Area (Mock) */}
-            <div className="h-48 bg-slate-50 rounded-2xl mb-8 flex items-end justify-center px-4 py-8 gap-1 w-full overflow-hidden">
+            <div className="h-48 bg-slate-900/40 rounded-2xl mb-8 flex items-end justify-center px-4 py-8 gap-1 w-full overflow-hidden">
              {/* Generate bars with deterministic heights so they don't jitter on re-render */}
              {Array.from({ length: 60 }).map((_, i) => {
                 // Pseudo-random but stable height based on index
@@ -239,7 +239,7 @@ function Music() {
                 return (
                  <div 
                    key={i} 
-                   className={`w-2 rounded-t-sm transition-all duration-300 ${isActive ? 'bg-yellow-400' : 'bg-slate-200'}`}
+                   className={`w-2 rounded-t-sm transition-all duration-300 ${isActive ? 'bg-yellow-400' : 'bg-white/20'}`}
                    style={{ height: `${height}%` }}
                  />
                 );
@@ -249,11 +249,11 @@ function Music() {
             {/* Progress Bar */}
             <div className="mb-8">
               <div
-                className="relative w-full h-2 bg-slate-200 rounded-full cursor-pointer group"
+                className="relative w-full h-2 bg-white/20 rounded-full cursor-pointer group"
                 onClick={handleSeek}
               >
                   <div 
-                    className="absolute top-0 left-0 h-full bg-slate-200 rounded-full w-full"
+                    className="absolute top-0 left-0 h-full bg-white/20 rounded-full w-full"
                   ></div>
                    {/* Active Progress */}
                   <div 
@@ -264,7 +264,7 @@ function Music() {
                       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-yellow-400 border-2 border-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>
               </div>
-              <div className="flex justify-between mt-2 text-sm text-slate-500 font-medium">
+              <div className="flex justify-between mt-2 text-sm text-slate-400 font-medium">
                 <span>{formatTime(currentTime)}</span>
                 <span>{formatTime(effectiveDuration)}</span>
               </div>
@@ -275,7 +275,7 @@ function Music() {
               <div className="flex items-center gap-6">
                 <button 
                   onClick={handlePrev}
-                  className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                  className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800/40 hover:bg-white/20 text-slate-200 transition"
                 >
                   <SkipBackIcon />
                 </button>
@@ -283,10 +283,10 @@ function Music() {
                 <button 
                   onClick={togglePlay}
                   disabled={!currentTrack.audioUrl}
-                  className={`w-16 h-16 flex items-center justify-center rounded-full text-slate-900 shadow-lg shadow-yellow-200 transition transform hover:scale-105 ${
+                  className={`w-16 h-16 flex items-center justify-center rounded-full text-white shadow-lg shadow-yellow-200 transition transform hover:scale-105 ${
                     currentTrack.audioUrl
                       ? "bg-yellow-400 hover:bg-yellow-300"
-                      : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                      : "bg-white/20 text-slate-400 cursor-not-allowed"
                   }`}
                 >
                   {isPlaying ? <PauseIcon /> : <PlayIcon />}
@@ -294,7 +294,7 @@ function Music() {
 
                 <button 
                    onClick={handleNext}
-                   className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                   className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800/40 hover:bg-white/20 text-slate-200 transition"
                 >
                   <SkipForwardIcon />
                 </button>
@@ -311,7 +311,7 @@ function Music() {
                   max="100" 
                   value={volume} 
                   onChange={(e) => setVolume(Number(e.target.value))}
-                  className="w-full sm:w-32 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-400"
+                  className="w-full sm:w-32 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-slate-400"
                 />
               </div>
             </div>
@@ -332,8 +332,8 @@ function Music() {
 
           {/* Playlist Sidebar */}
           <div className="lg:col-span-1">
-             <div className="bg-white rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 border border-slate-100 h-full">
-                <h3 className="text-2xl font-serif font-bold text-slate-900 mb-6">Playlist</h3>
+             <div className="bg-white/10 rounded-[2rem] shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] p-8 border border-white/10 h-full">
+                <h3 className="text-2xl font-serif font-bold text-white mb-6">Playlist</h3>
                 
                 <div className="space-y-4">
                   {tracks.map((track, index) => {
@@ -346,19 +346,19 @@ function Music() {
                             p-4 rounded-2xl cursor-pointer transition-all border
                             ${isActive 
                                 ? 'bg-yellow-50 border-yellow-400 shadow-sm' 
-                                : 'bg-slate-50 border-transparent hover:bg-slate-100'
+                                : 'bg-slate-900/40 border-transparent hover:bg-slate-800/40'
                              }
                           `}
                         >
                           <div className="flex justify-between items-start mb-1">
-                            <h4 className={`font-bold text-lg ${isActive ? 'text-slate-900' : 'text-slate-700'}`}>
+                            <h4 className={`font-bold text-lg ${isActive ? 'text-white' : 'text-slate-200'}`}>
                                 {track.title}
                             </h4>
-                            <span className={`text-sm ${isActive ? 'text-slate-700' : 'text-slate-400'}`}>
+                            <span className={`text-sm ${isActive ? 'text-slate-200' : 'text-slate-400'}`}>
                               {isActive ? formatTime(effectiveDuration) : "--:--"}
                             </span>
                           </div>
-                          <p className={`text-sm ${isActive ? 'text-slate-600' : 'text-slate-500'}`}>
+                          <p className={`text-sm ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>
                               {track.genre}
                           </p>
                         </div>

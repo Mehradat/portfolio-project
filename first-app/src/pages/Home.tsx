@@ -2,7 +2,6 @@ import { type ReactNode } from "react";
 import { motion } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import ThreeBackground from "../components/ThreeBackground";
 
 // @ts-ignore
 import bgImage from "../assets/images/backgroundd.png";
@@ -36,7 +35,6 @@ const RevealOnScroll = ({ children, className = "", delay = 0 }: { children: Rea
 function Home() {
     return (
         <div className="text-white min-h-screen overflow-x-hidden">
-      <ThreeBackground />
       
       {/* Header outside of Hero Container to prevent z-index issues */}
       <div className="relative z-[200]">

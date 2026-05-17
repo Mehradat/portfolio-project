@@ -11,6 +11,7 @@ import AdminPanel from "./pages/AdminPanel";
 import Sequencer from "./pages/Sequencer";
 import EditProject from "./pages/EditProject";
 import CustomCursor from "./components/CustomCursor";
+import ThreeBackground from "./components/ThreeBackground";
 
 function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
@@ -86,6 +87,7 @@ function App() {
   return (
     <>
       <CustomCursor />
+      <ThreeBackground />
       <Component />
     </>
   );
