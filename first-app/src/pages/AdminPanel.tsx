@@ -1066,13 +1066,13 @@ function AdminPanel() {
             {cvUrl && (
               <div className="mt-8 p-4 bg-gray-50 rounded-lg border">
                 <h4 className="font-medium text-gray-700 mb-2">Current Active CV</h4>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600 truncate mr-4">{cvUrl.split('/').pop()}</span>
-                  <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <span className="text-sm text-gray-600 truncate w-full sm:w-auto">{cvUrl.split('/').pop()}</span>
+                  <div className="flex gap-2 w-full sm:w-auto">
                     <button
                       onClick={handleCvDelete}
                       type="button"
-                      className="flex-shrink-0 text-red-600 hover:text-red-800 text-sm font-medium border border-red-600 px-3 py-1 rounded"
+                      className="flex-1 sm:flex-none text-red-600 hover:text-red-800 text-sm font-medium border border-red-600 px-3 py-2 sm:py-1 rounded text-center justify-center transition-colors"
                     >
                       Delete
                     </button>
@@ -1080,7 +1080,7 @@ function AdminPanel() {
                       href={cvUrl} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="flex-shrink-0 text-teal-600 hover:text-teal-800 text-sm font-medium border border-teal-600 px-3 py-1 rounded"
+                      className="flex-1 sm:flex-none text-teal-600 hover:text-teal-800 text-sm font-medium border border-teal-600 px-3 py-2 sm:py-1 rounded text-center justify-center flex items-center transition-colors"
                     >
                       View Current
                     </a>
