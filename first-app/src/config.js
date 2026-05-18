@@ -129,5 +129,5 @@ export const TIMELINE_VIEWPORT = {
 // Toggle these depending on whether you are testing locally or deploying
 export const API_URL =
   import.meta.env.MODE === "production"
-    ? "https://portfolio-project-3otb.onrender.com"
+    ? "" // Proxied via vercel.json
     : "http://localhost:5005";
