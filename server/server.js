@@ -55,7 +55,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       httpOnly: true,
-      secure: isProd, 
+      secure: isProd,
       sameSite: "lax", // Ensure this works for first-party proxies without Safari issues
     },
   }),
