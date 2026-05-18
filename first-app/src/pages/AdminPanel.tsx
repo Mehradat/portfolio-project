@@ -681,10 +681,10 @@ function AdminPanel() {
         <h2 className="text-3xl font-bold mb-8 text-center">Dashboard</h2>
 
         <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
+          <div className="flex flex-wrap justify-center gap-1 rounded-lg border border-gray-200 bg-white p-1 shadow-sm w-full max-w-full sm:w-auto">
             <button
               onClick={() => setActiveSection("projects")}
-              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
                 activeSection === "projects"
                   ? "bg-green-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
@@ -694,7 +694,7 @@ function AdminPanel() {
             </button>
             <button
               onClick={() => setActiveSection("music")}
-              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
                 activeSection === "music"
                   ? "bg-purple-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
@@ -704,7 +704,7 @@ function AdminPanel() {
             </button>
             <button
               onClick={() => setActiveSection("contacts")}
-              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
                 activeSection === "contacts"
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
@@ -714,7 +714,7 @@ function AdminPanel() {
             </button>
             <button
               onClick={() => setActiveSection("cv")}
-              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
                 activeSection === "cv"
                   ? "bg-teal-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
@@ -724,7 +724,7 @@ function AdminPanel() {
             </button>
             <button
               onClick={() => setActiveSection("users")}
-              className={`px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
+              className={`flex-1 sm:flex-none px-3 sm:px-5 py-2 rounded-md text-sm font-semibold transition-colors ${
                 activeSection === "users"
                   ? "bg-indigo-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
