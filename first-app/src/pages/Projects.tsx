@@ -207,12 +207,12 @@ function Projects() {
                 </div>
                 
                 <div className="flex text-[#bd93f9]">
-                  <span className="mr-2">></span>
+                  <span className="mr-2">&gt;</span>
                   <span>Connecting to database...</span>
                 </div>
 
                 <div className="flex text-[#f1fa8c]">
-                  <span className="mr-2">></span>
+                  <span className="mr-2">&gt;</span>
                   <div className="flex items-center gap-1">
                     <span>Downloading awesomeness</span>
                     <span className="flex space-x-1 ml-1 items-b">
