@@ -22,6 +22,12 @@ const categories = [
   "Front-End Showcase",
 ];
 
+const optimizeCloudinaryUrl = (url: string, width = 800) => {
+  if (!url || !url.includes("cloudinary.com")) return url;
+  if (url.includes("/upload/f_auto")) return url;
+  return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+};
+
 function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [activeCategory, setActiveCategory] = useState("All Projects");
@@ -41,6 +47,9 @@ function Projects() {
   const dragScrollLeft = React.useRef(0);
   const hasDragged = React.useRef(false);
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+
   // Fetch data from backend
   useEffect(() => {
     fetch(`${API_URL}/api/projects`)
@@ -48,8 +57,18 @@ function Projects() {
       .then((data) => {
         console.log("DATA:", data);
         setProjects(data);
+        // Start fading out the loader softly
+        setIsFadingOut(true);
+        // Remove loader from DOM after transition completes
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 700);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsFadingOut(true);
+        setTimeout(() => setIsLoading(false), 700);
+      });
   }, []);
 
   // Automatically scroll to the active thumbnail in the lightbox
@@ -162,34 +181,55 @@ function Projects() {
     <div className="min-h-screen transition-colors duration-500  bg-transparent dark:bg-transparent font-sans text-slate-800 dark:text-white">
       <Header className="text-slate-900 dark:text-white" />
 
-      <main className="max-w-7xl mx-auto px-6 py-12">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-6xl md:text-7xl font-serif font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
-            Projects
-          </h1>
-        </div>
+      <main className="max-w-7xl mx-auto px-6 py-12 relative min-h-[60vh]">
+        {/* Animated Loading Overlay */}
+        {isLoading && (
+          <div 
+            className={`absolute inset-0 z-10 flex flex-col items-center justify-center bg-transparent transition-opacity duration-700 ease-in-out ${
+              isFadingOut ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <div className="relative flex items-center justify-center w-24 h-24">
+              <div className="absolute w-full h-full border-4 border-yellow-400/20 rounded-full"></div>
+              <div className="absolute w-full h-full border-4 border-yellow-400 rounded-full border-t-transparent animate-spin"></div>
+              <div className="absolute w-16 h-16 border-4 border-slate-900/10 dark:border-white/10 rounded-full"></div>
+              <div className="absolute w-16 h-16 border-4 border-slate-900 dark:border-white rounded-full border-b-transparent animate-[spin_1.5s_linear_infinite_reverse]"></div>
+            </div>
+            <p className="mt-8 text-lg font-medium text-slate-800 dark:text-white tracking-[0.3em] uppercase animate-pulse">
+              Loading
+            </p>
+          </div>
+        )}
 
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-3 rounded-lg border-2 ${
-                activeCategory === cat
-                  ? "bg-yellow-400 text-black"
-                  : "bg-white dark:bg-transparent text-gray-500 dark:text-slate-400"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+        {/* Content with Fade-in Effect */}
+        <div className={`transition-opacity duration-700 ease-in-out ${isLoading && !isFadingOut ? "opacity-0 invisible" : "opacity-100 visible"}`}>
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-6xl md:text-7xl font-serif font-extrabold text-slate-900 dark:text-white mb-6 tracking-tight">
+              Projects
+            </h1>
+          </div>
 
-        {/* Projects */}
-        <div className="space-y-16">
-          {filteredProjects.map((project) => (
+          {/* Filters */}
+          <div className="flex flex-wrap justify-center gap-4 mb-16">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className={`px-6 py-3 rounded-lg border-2 ${
+                  activeCategory === cat
+                    ? "bg-yellow-400 text-black border-yellow-400"
+                    : "bg-white dark:bg-transparent text-gray-500 dark:text-slate-400 border-gray-200 dark:border-gray-700/50 hover:border-yellow-400/50 dark:hover:border-yellow-400/50"
+                } transition-colors duration-300`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Projects */}
+          <div className="space-y-16">
+            {filteredProjects.map((project) => (
             <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
               <div className="w-full lg:w-7/12">
                 {(() => {
@@ -207,7 +247,7 @@ function Projects() {
                         onTouchEnd={() => handleTouchEndProject(project._id, images.length)}
                       >
                         <img
-                          src={currentImage}
+                          src={optimizeCloudinaryUrl(currentImage, 800)}
                           alt={project.title}
                           className="cursor-pointer w-full h-full object-cover object-top"
                           onClick={() => openLightbox(project, safeIndex)}
@@ -305,6 +345,7 @@ function Projects() {
             </div>
           ))}
         </div>
+        </div>
       </main>
 
       {isLightboxOpen && lightboxImages.length > 0 && (
@@ -340,7 +381,7 @@ function Projects() {
           </button>
 
           <img
-            src={lightboxImages[lightboxIndex]}
+            src={optimizeCloudinaryUrl(lightboxImages[lightboxIndex], 1920)}
             alt={`Project image ${lightboxIndex + 1}`}
             className="max-w-[95vw] max-h-[75vh] object-contain rounded-xl shadow-2xl border border-white/20"
             onClick={(e) => e.stopPropagation()}
@@ -423,7 +464,7 @@ function Projects() {
                       : "border-transparent w-12 h-12 md:w-14 md:h-14 opacity-50 hover:opacity-100"
                   }`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} draggable="false" className="w-full h-full object-cover pointer-events-none select-none" />
+                  <img src={optimizeCloudinaryUrl(img, 150)} alt={`Thumbnail ${idx + 1}`} draggable="false" className="w-full h-full object-cover pointer-events-none select-none" />
                 </button>
               ))}
             </div>
