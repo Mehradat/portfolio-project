@@ -189,15 +189,45 @@ function Projects() {
               isFadingOut ? "opacity-0" : "opacity-100"
             }`}
           >
-            <div className="relative flex items-center justify-center w-24 h-24">
-              <div className="absolute w-full h-full border-4 border-yellow-400/20 rounded-full"></div>
-              <div className="absolute w-full h-full border-4 border-yellow-400 rounded-full border-t-transparent animate-spin"></div>
-              <div className="absolute w-16 h-16 border-4 border-slate-900/10 dark:border-white/10 rounded-full"></div>
-              <div className="absolute w-16 h-16 border-4 border-slate-900 dark:border-white rounded-full border-b-transparent animate-[spin_1.5s_linear_infinite_reverse]"></div>
+            {/* Terminal Window Theme Loader */}
+            <div className="w-80 sm:w-96 bg-[#1e1e1e] rounded-xl overflow-hidden shadow-2xl border border-slate-700 font-mono">
+              {/* Terminal Header */}
+              <div className="bg-[#2d2d2d] px-4 py-3 flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-[#ff5f56]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#27c93f]"></div>
+                <div className="ml-2 text-[#858585] text-xs font-semibold tracking-wider">bash - mehradata </div>
+              </div>
+              {/* Terminal Body */}
+              <div className="p-5 text-sm sm:text-base flex flex-col gap-3">
+                <div className="flex gap-2 items-center text-[#50fa7b]">
+                  <span className="text-[#ff79c6]">~</span>
+                  <span className="text-white">$</span>
+                  <span className="text-[#8be9fd]">fetch_projects()</span>
+                </div>
+                
+                <div className="flex text-[#bd93f9]">
+                  <span className="mr-2">></span>
+                  <span>Connecting to database...</span>
+                </div>
+
+                <div className="flex text-[#f1fa8c]">
+                  <span className="mr-2">></span>
+                  <div className="flex items-center gap-1">
+                    <span>Downloading awesomeness</span>
+                    <span className="flex space-x-1 ml-1 items-b">
+                      <span className="w-1.5 h-1.5 bg-[#f1fa8c] rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                      <span className="w-1.5 h-1.5 bg-[#f1fa8c] rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                      <span className="w-1.5 h-1.5 bg-[#f1fa8c] rounded-full animate-bounce"></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex mt-1 text-white">
+                  <span className="w-2.5 h-5 bg-white animate-pulse"></span>
+                </div>
+              </div>
             </div>
-            <p className="mt-8 text-lg font-medium text-slate-800 dark:text-white tracking-[0.3em] uppercase animate-pulse">
-              Loading
-            </p>
           </div>
         )}
 
