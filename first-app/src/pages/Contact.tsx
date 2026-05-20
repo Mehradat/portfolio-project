@@ -199,7 +199,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                     ? 'bg-green-500 text-slate-900 dark:text-white shadow-green-200 cursor-default' 
                     : isSubmitting
                       ? 'bg-slate-200 dark:bg-slate-800 dark:bg-white/20 text-slate-500 dark:text-slate-400 cursor-wait'
-                      : 'bg-slate-900 text-slate-900 dark:text-white hover:bg-yellow-400 hover:text-slate-900 dark:text-white hover:shadow-yellow-200 hover:-translate-y-1'
+                      : 'bg-slate-900 text-white dark:bg-slate-800 dark:text-white hover:bg-yellow-400 hover:text-slate-900 dark:hover:text-slate-900 dark:hover:bg-yellow-400 hover:-translate-y-1'
                   }
                 `}
               >
