@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { API_URL } from "../config";
@@ -24,6 +25,7 @@ const categories = [
 
 function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("All Projects");
   const [projectSlideIndex, setProjectSlideIndex] = useState<Record<string, number>>({});
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -43,13 +45,18 @@ function Projects() {
 
   // Fetch data from backend
   useEffect(() => {
+    setIsLoading(true);
     fetch(`${API_URL}/api/projects`)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA:", data);
         setProjects(data);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, []);
 
   // Automatically scroll to the active thumbnail in the lightbox
@@ -188,7 +195,75 @@ function Projects() {
         </div>
 
         {/* Projects */}
-        <div className="space-y-16">
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <motion.div
+              key="loader"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, scale: 0.95, filter: "blur(8px)" }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              className="flex flex-col items-center justify-center min-h-[50vh] w-full"
+            >
+              <div className="relative w-40 h-40 flex items-center justify-center mb-8">
+                {/* Outer rotating dashed ring */}
+                <motion.svg
+                  className="absolute inset-0 w-full h-full text-slate-300 dark:text-slate-700"
+                  viewBox="0 0 100 100"
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
+                >
+                  <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 6" />
+                </motion.svg>
+                
+                {/* Inner rotating gradient-like SVG */}
+                <motion.svg
+                  className="absolute inset-2 w-[calc(100%-16px)] h-[calc(100%-16px)]"
+                  viewBox="0 0 100 100"
+                  animate={{ rotate: -360 }}
+                  transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+                >
+                  <defs>
+                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#eab308" />
+                      <stop offset="100%" stopColor="#3b82f6" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="url(#ringGrad)" strokeWidth="2" strokeDasharray="70 150" strokeLinecap="round" />
+                </motion.svg>
+
+                {/* Center Equalizer / Bar Animation */}
+                <div className="flex items-center justify-center gap-1.5 h-12 z-10">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <motion.div
+                      key={i}
+                      animate={{ height: ["20%", "100%", "20%"] }}
+                      transition={{ repeat: Infinity, duration: 0.8, ease: "easeInOut", delay: i * 0.1 }}
+                      className="w-1.5 bg-yellow-400 rounded-full shadow-[0_0_10px_rgba(234,179,8,0.5)]"
+                    />
+                  ))}
+                </div>
+              </div>
+
+              <motion.div
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+                className="text-xl font-bold tracking-[0.3em] text-slate-800 dark:text-white uppercase"
+              >
+                Loading
+              </motion.div>
+              <div className="text-sm text-slate-500 dark:text-slate-400 tracking-widest mt-3 uppercase">
+                Please wait
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="content"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="space-y-16"
+            >
           {filteredProjects.map((project) => (
             <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
               <div className="w-full lg:w-7/12">
@@ -209,6 +284,8 @@ function Projects() {
                         <img
                           src={currentImage}
                           alt={project.title}
+                          loading="lazy"
+                          decoding="async"
                           className="cursor-pointer w-full h-full object-cover object-top"
                           onClick={() => openLightbox(project, safeIndex)}
                         />
@@ -304,7 +381,9 @@ function Projects() {
               </div>
             </div>
           ))}
-        </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {isLightboxOpen && lightboxImages.length > 0 && (
@@ -342,6 +421,8 @@ function Projects() {
           <img
             src={lightboxImages[lightboxIndex]}
             alt={`Project image ${lightboxIndex + 1}`}
+            loading="lazy"
+            decoding="async"
             className="max-w-[95vw] max-h-[75vh] object-contain rounded-xl shadow-2xl border border-white/20"
             onClick={(e) => e.stopPropagation()}
           />
@@ -423,7 +504,7 @@ function Projects() {
                       : "border-transparent w-12 h-12 md:w-14 md:h-14 opacity-50 hover:opacity-100"
                   }`}
                 >
-                  <img src={img} alt={`Thumbnail ${idx + 1}`} draggable="false" className="w-full h-full object-cover pointer-events-none select-none" />
+                  <img src={img} alt={`Thumbnail ${idx + 1}`} loading="lazy" decoding="async" draggable="false" className="w-full h-full object-cover pointer-events-none select-none" />
                 </button>
               ))}
             </div>
