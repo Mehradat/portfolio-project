@@ -262,11 +262,17 @@ function Projects() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="space-y-16"
+              className="space-y-24"
             >
           {filteredProjects.map((project) => (
-            <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-              <div className="w-full lg:w-7/12">
+            <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center overflow-x-hidden p-2">
+              <motion.div 
+                className="w-full lg:w-7/12"
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+              >
                 {(() => {
                   const images = getProjectImages(project);
                   const currentIndex = projectSlideIndex[project._id] ?? 0;
@@ -345,9 +351,15 @@ function Projects() {
                     </>
                   );
                 })()}
-              </div>
+              </motion.div>
 
-              <div className="w-full lg:w-5/12 bg-white/70 dark:bg-slate-900/40 p-6 md:p-8 rounded-2xl backdrop-blur-md shadow-lg border border-white/50 dark:border-white/10">
+              <motion.div 
+                className="w-full lg:w-5/12 bg-white/70 dark:bg-slate-900/40 p-6 md:p-8 rounded-2xl backdrop-blur-md shadow-lg border border-white/50 dark:border-white/10"
+                initial={{ opacity: 0, x: 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+              >
                   <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
                   {project.title}
                 </h2>
@@ -378,7 +390,7 @@ function Projects() {
                     ))}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           ))}
             </motion.div>
