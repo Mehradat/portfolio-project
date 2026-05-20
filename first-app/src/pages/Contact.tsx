@@ -126,7 +126,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             initial="hidden"
             animate="visible"
             transition={{ ...REVEAL_TRANSITION, delay: 0.2 }}
-            className="bg-white dark:bg-transparent rounded-[2.5rem] p-8 lg:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-slate-100 dark:border-slate-200 dark:border-white/10 relative overflow-hidden"
+            className="bg-white dark:bg-slate-900/30 dark:backdrop-blur-xl rounded-[2.5rem] p-8 lg:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-slate-100 dark:border-slate-200 dark:border-white/10 relative overflow-hidden"
           >
              {/* Decorative blob in form corner */}
             <div className="absolute -top-12.5 -right-12.5 w-32 h-32 bg-yellow-50 rounded-full blur-2xl pointer-events-none"></div>
