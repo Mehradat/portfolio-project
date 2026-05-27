@@ -264,14 +264,14 @@ function Projects() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="space-y-24"
             >
-          {filteredProjects.map((project) => (
+          {filteredProjects.map((project, index) => (
             <div key={project._id} className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center overflow-x-hidden p-2">
               <motion.div 
                 className="w-full lg:w-7/12"
                 initial={{ opacity: 0, x: -80 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true, amount: 0.05, margin: "100px" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: index < 2 ? 0.3 : 0 }}
               >
                 {(() => {
                   const images = getProjectImages(project);
@@ -290,8 +290,8 @@ function Projects() {
                         <img
                           src={currentImage}
                           alt={project.title}
-                          loading="lazy"
-                          decoding="async"
+                          loading={index === 0 ? "eager" : "lazy"}
+                          decoding={index === 0 ? "sync" : "async"}
                           className="cursor-pointer w-full h-full object-cover object-top"
                           onClick={() => openLightbox(project, safeIndex)}
                         />
@@ -357,8 +357,8 @@ function Projects() {
                 className="w-full lg:w-5/12 bg-white/70 dark:bg-slate-900/40 p-6 md:p-8 rounded-2xl backdrop-blur-md shadow-lg border border-white/50 dark:border-white/10"
                 initial={{ opacity: 0, x: 80 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                viewport={{ once: true, amount: 0.05, margin: "100px" }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: index < 2 ? 0.4 : 0.2 }}
               >
                   <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
                   {project.title}
